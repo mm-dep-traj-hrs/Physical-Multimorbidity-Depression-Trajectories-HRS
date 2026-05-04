@@ -1,0 +1,245 @@
+Mplus VERSION 8.8
+MUTHEN & MUTHEN
+04/03/2026   4:48 PM
+
+INPUT INSTRUCTIONS
+
+DATA: FILE = "mplus_file_df3.dat";
+VARIABLE: 
+NAMES = r11wtresp raestrat hhid pn hhidpn r11cesd r12cesd r13cesd r14cesd r15cesd
+     r11agey_b r12agey_b r13agey_b r14agey_b r15agey_b r11iwstat r12iwstat r13iwstat
+     r14iwstat r15iwstat r11hibp r11diab r11cancr r11lung r11heart r11strok r11arthr
+     hbp12_c dia12_c can12_c lung12_c hrt12_c str12_c art12_c mcc_12 ragender female
+     r11doctim r11doctim_q r11doctim_q1 r11doctim_q2 r11doctim_q3 r11doctim_q4 white
+     black other latinx r12mstat mar_12 mar_f_12 educ_yr_f edu_c educ_c_1 educ_c_2
+     educ_c_3 h11itot inc_q_12 inc_q1_12 inc_q2_12 inc_q3_12 inc_q4_12 h11atotb
+     wlt_q_12 wlt_q1_12 wlt_q2_12 wlt_q3_12 wlt_q4_12 nonus_b bmi_12un bmi_12n
+     bmi_12ow bmi_12ob vact_12c ch_circum ch_cir_0 ch_cir_1 ch_cir_2 ch_cir_3
+     ch_cir_4 ch_cir_5 ch_hlth_p drnk_12 drnk_12_0 drnk_12_1 drnk_12_2 smoke_12
+     combos no_cond_12 hbp_1_12 diab_1_12 can_1_12 lung_1_12 hrt_1_12 strk_1_12
+     art_1_12 hbp_art hbp_hrt_art hbp_dia_art hbp_dia_hrt_art hbp_can_art hbp_dia
+     hrt_art can_art hbp_lng_art oth_comb oth_sin_cond_12 combos_nm_reduc; 
+MISSING=.;
+  usevariables =
+      r11cesd r12cesd r13cesd r14cesd r15cesd
+
+      ts1_5 ts2_5 ts3_5 ts4_5 ts5_5
+      ;
+
+      cluster = hhid ;
+      stratification = raestrat;
+      weight is r11wtresp;
+
+      tscores =   ts1_5 ts2_5 ts3_5 ts4_5 ts5_5;
+
+      count is r11cesd r12cesd r13cesd r14cesd r15cesd;
+
+      define:
+      rll_age_c = r11agey_b - 74.214;
+
+        ts1_5 = (r11agey_b - 74)/2;
+        ts2_5 = (r12agey_b - 74)/2;
+        ts3_5 = (r13agey_b - 74)/2;
+        ts4_5 = (r14agey_b - 74)/2;
+        ts5_5 = (r15agey_b - 74)/2;
+
+
+   analysis:
+      type = complex random;
+      estimator = mlr;
+      processors = 15;
+
+   model:
+      dep_i dep_s|
+      r11cesd r12cesd r13cesd r14cesd r15cesd at ts1_5 ts2_5 ts3_5 ts4_5 ts5_5;
+
+      [dep_i](p1);
+      dep_i@0;
+
+      [dep_s@0];
+      dep_s@0;
+
+      dep_i with dep_s @0;
+
+
+  model test:
+  p1 = 0;
+
+
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        9004
+
+Number of dependent variables                                    5
+Number of independent variables                                  0
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Count
+   R11CESD     R12CESD     R13CESD     R14CESD     R15CESD
+
+Continuous latent variables
+   DEP_I       DEP_S
+
+Variables with special functions
+
+  Stratification        RAESTRAT
+  Cluster variable      HHID
+  Weight variable       R11WTRES
+
+  Time scores
+   TS1_5       TS2_5       TS3_5       TS4_5       TS5_5
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            0
+  Adaptive quadrature                                           ON
+Cholesky                                                       OFF
+
+Input data file(s)
+  mplus_file_df4_pain.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of strata                           55
+     Number of clusters                       6908
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+COUNT PROPORTION OF ZERO, MINIMUM AND MAXIMUM VALUES
+
+      R11CESD     0.242         0         8
+      R12CESD     0.257         0         8
+      R13CESD     0.266         0         8
+      R14CESD     0.271         0         8
+      R15CESD     0.269         0         8
+
+
+
+     WARNING:  THE VARIANCE CONTRIBUTION FROM A STRATUM WITH A SINGLE CLUSTER
+     (PSU) IS BASED ON THE DIFFERENCE BETWEEN THE SINGLE CLUSTER VALUE AND
+     THE OVERALL CLUSTER MEAN.
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                        1
+
+Loglikelihood
+
+          H0 Value                      -61081.924
+          H0 Scaling Correction Factor     10.5893
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                  122165.849
+          Bayesian (BIC)                122172.954
+          Sample-Size Adjusted BIC      122169.776
+            (n* = (n + 2) / 24)
+
+Wald Test of Parameter Constraints
+
+          Value                            275.575
+          Degrees of Freedom                     1
+          P-Value                           0.0000
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ DEP_I    WITH
+    DEP_S              0.000      0.000    999.000    999.000
+
+ Means
+    DEP_I              0.261      0.016     16.600      0.000
+    DEP_S              0.000      0.000    999.000    999.000
+
+ Intercepts
+    R11CESD            0.000      0.000    999.000    999.000
+    R12CESD            0.000      0.000    999.000    999.000
+    R13CESD            0.000      0.000    999.000    999.000
+    R14CESD            0.000      0.000    999.000    999.000
+    R15CESD            0.000      0.000    999.000    999.000
+
+ Variances
+    DEP_I              0.000      0.000    999.000    999.000
+    DEP_S              0.000      0.000    999.000    999.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.100E+01
+       (ratio of smallest to largest eigenvalue)
+
+
+     Beginning Time:  16:48:05
+        Ending Time:  16:48:07
+       Elapsed Time:  00:00:02
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2022 Muthen & Muthen

@@ -1,0 +1,1902 @@
+Mplus VERSION 8.8
+MUTHEN & MUTHEN
+04/10/2026  10:50 AM
+
+INPUT INSTRUCTIONS
+
+DATA: FILE = "mplus_file_df3.dat";
+VARIABLE: 
+NAMES = r11wtresp raestrat hhid pn hhidpn r11cesd r12cesd r13cesd r14cesd r15cesd
+     r11agey_b r12agey_b r13agey_b r14agey_b r15agey_b r11iwstat r12iwstat r13iwstat
+     r14iwstat r15iwstat r11hibp r11diab r11cancr r11lung r11heart r11strok r11arthr
+     hbp12_c dia12_c can12_c lung12_c hrt12_c str12_c art12_c mcc_12 ragender female
+     r11doctim r11doctim_q r11doctim_q1 r11doctim_q2 r11doctim_q3 r11doctim_q4 white
+     black other latinx r12mstat mar_12 mar_f_12 educ_yr_f edu_c educ_c_1 educ_c_2
+     educ_c_3 h11itot inc_q_12 inc_q1_12 inc_q2_12 inc_q3_12 inc_q4_12 h11atotb
+     wlt_q_12 wlt_q1_12 wlt_q2_12 wlt_q3_12 wlt_q4_12 nonus_b bmi_12un bmi_12n
+     bmi_12ow bmi_12ob vact_12c ch_circum ch_cir_0 ch_cir_1 ch_cir_2 ch_cir_3
+     ch_cir_4 ch_cir_5 ch_hlth_p drnk_12 drnk_12_0 drnk_12_1 drnk_12_2 smoke_12
+     combos no_cond_12 hbp_1_12 diab_1_12 can_1_12 lung_1_12 hrt_1_12 strk_1_12
+     art_1_12 hbp_art hbp_hrt_art hbp_dia_art hbp_dia_hrt_art hbp_can_art hbp_dia
+     hrt_art can_art hbp_lng_art oth_comb oth_sin_cond_12 combos_nm_reduc; 
+MISSING=.;
+
+  usevariables =
+        r11cesd r12cesd r13cesd r14cesd r15cesd
+
+        art_1_12 hbp_1_12 oth_sin_cond_12
+        hbp_art hbp_hrt_art hbp_dia_art hbp_dia_hrt_art
+        hbp_can_art hbp_dia hrt_art can_art hbp_lng_art
+        oth_comb
+        r11agey_b female mar_12 black other latinx nonus_b
+        educ_c_1 educ_c_3
+        inc_q2_12 inc_q3_12 inc_q4_12
+        wlt_q2_12 wlt_q3_12 wlt_q4_12
+        bmi_12un bmi_12ow bmi_12ob
+        vact_12c
+        ch_cir_1 ch_cir_2 ch_cir_3 ch_cir_4 ch_cir_5
+        ch_hlth_p
+        drnk_12_1 drnk_12_2
+        smoke_12
+        r11doctim_q2 r11doctim_q3 r11doctim_q4
+
+        ts1_5 ts2_5 ts3_5 ts4_5 ts5_5
+      ;
+
+      cluster = hhid ;
+      stratification = raestrat;
+      weight is r11wtresp;
+
+      tscores =   ts1_5 ts2_5 ts3_5 ts4_5 ts5_5;
+
+      count is r11cesd r12cesd r13cesd r14cesd r15cesd;
+
+      define:
+      !calculate time scores
+        ts1_5 = (r11agey_b - 74)/2;
+        ts2_5 = (r12agey_b - 74)/2;
+        ts3_5 = (r13agey_b - 74)/2;
+        ts4_5 = (r14agey_b - 74)/2;
+        ts5_5 = (r15agey_b - 74)/2;
+
+      !centering all covariates so intercept is at mean 
+      center r11agey_b female mar_12 black other latinx nonus_b
+              educ_c_1 educ_c_3
+              inc_q2_12 inc_q3_12 inc_q4_12
+              wlt_q2_12 wlt_q3_12 wlt_q4_12
+              bmi_12un bmi_12ow bmi_12ob
+              vact_12c
+              ch_cir_1 ch_cir_2 ch_cir_3 ch_cir_4 ch_cir_5
+              ch_hlth_p
+              drnk_12_1 drnk_12_2
+              smoke_12
+              r11doctim_q2 r11doctim_q3 r11doctim_q4 (grandmean);
+
+
+   analysis:
+      type = complex random;
+      estimator = mlr;
+      processors = 15;
+
+   model:
+      dep_i dep_s|
+      r11cesd r12cesd r13cesd r14cesd r15cesd at ts1_5 ts2_5 ts3_5 ts4_5 ts5_5;
+
+     dep_i ON
+        art_1_12 hbp_1_12 oth_sin_cond_12
+        hbp_art hbp_hrt_art hbp_dia_art hbp_dia_hrt_art
+        hbp_can_art hbp_dia hrt_art can_art hbp_lng_art
+        oth_comb
+        r11agey_b female mar_12 black other latinx nonus_b
+        educ_c_1 educ_c_3
+        inc_q2_12 inc_q3_12 inc_q4_12
+        wlt_q2_12 wlt_q3_12 wlt_q4_12
+        bmi_12un bmi_12ow bmi_12ob
+        vact_12c
+        ch_cir_1 ch_cir_2 ch_cir_3 ch_cir_4 ch_cir_5
+        ch_hlth_p
+        drnk_12_1 drnk_12_2
+        smoke_12
+        r11doctim_q2 r11doctim_q3 r11doctim_q4;
+
+      dep_s on
+        art_1_12 hbp_1_12 oth_sin_cond_12
+        hbp_art hbp_hrt_art hbp_dia_art hbp_dia_hrt_art
+        hbp_can_art hbp_dia hrt_art can_art hbp_lng_art
+        oth_comb
+        r11agey_b female mar_12 black other latinx nonus_b
+        educ_c_1 educ_c_3
+        inc_q2_12 inc_q3_12 inc_q4_12
+        wlt_q2_12 wlt_q3_12 wlt_q4_12
+        bmi_12un bmi_12ow bmi_12ob
+        vact_12c
+        ch_cir_1 ch_cir_2 ch_cir_3 ch_cir_4 ch_cir_5
+        ch_hlth_p
+        drnk_12_1 drnk_12_2
+        smoke_12
+        r11doctim_q2 r11doctim_q3 r11doctim_q4;
+
+       !allow covariates to correlate freely for FIML
+        art_1_12 hbp_1_12 oth_sin_cond_12
+        hbp_art hbp_hrt_art hbp_dia_art hbp_dia_hrt_art
+        hbp_can_art hbp_dia hrt_art can_art hbp_lng_art
+        oth_comb
+        r11agey_b female mar_12 black other latinx nonus_b
+        educ_c_1 educ_c_3
+        inc_q2_12 inc_q3_12 inc_q4_12
+        wlt_q2_12 wlt_q3_12 wlt_q4_12
+        bmi_12un bmi_12ow bmi_12ob
+        vact_12c
+        ch_cir_1 ch_cir_2 ch_cir_3 ch_cir_4 ch_cir_5
+        ch_hlth_p
+        drnk_12_1 drnk_12_2
+        smoke_12
+        r11doctim_q2 r11doctim_q3 r11doctim_q4;
+
+
+
+*** WARNING in VARIABLE command
+  Note that only the first 8 characters of variable names are used in the output.
+  Shorten variable names to avoid any confusion.
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        9004
+
+Number of dependent variables                                    5
+Number of independent variables                                 44
+Number of continuous latent variables                            2
+
+Observed dependent variables
+
+  Count
+   R11CESD     R12CESD     R13CESD     R14CESD     R15CESD
+
+Observed independent variables
+   ART_1_12    HBP_1_12    OTH_SIN_    HBP_ART     HBP_HRT_    HBP_DIA_
+   HBP_DIA_    HBP_CAN_    HBP_DIA     HRT_ART     CAN_ART     HBP_LNG_
+   OTH_COMB    R11AGEY_    FEMALE      MAR_12      BLACK       OTHER
+   LATINX      NONUS_B     EDUC_C_1    EDUC_C_3    INC_Q2_1    INC_Q3_1
+   INC_Q4_1    WLT_Q2_1    WLT_Q3_1    WLT_Q4_1    BMI_12UN    BMI_12OW
+   BMI_12OB    VACT_12C    CH_CIR_1    CH_CIR_2    CH_CIR_3    CH_CIR_4
+   CH_CIR_5    CH_HLTH_    DRNK_12_    DRNK_12_    SMOKE_12    R11DOCTI
+   R11DOCTI    R11DOCTI
+
+Continuous latent variables
+   DEP_I       DEP_S
+
+Variables with special functions
+
+  Stratification        RAESTRAT
+  Cluster variable      HHID
+  Weight variable       R11WTRES
+
+  Time scores
+   TS1_5       TS2_5       TS3_5       TS4_5       TS5_5
+
+  Centering (GRANDMEAN)
+   R11AGEY_    FEMALE      MAR_12      BLACK       OTHER       LATINX
+   NONUS_B     EDUC_C_1    EDUC_C_3    INC_Q2_1    INC_Q3_1    INC_Q4_1
+   WLT_Q2_1    WLT_Q3_1    WLT_Q4_1    BMI_12UN    BMI_12OW    BMI_12OB
+   VACT_12C    CH_CIR_1    CH_CIR_2    CH_CIR_3    CH_CIR_4    CH_CIR_5
+   CH_HLTH_    DRNK_12_    DRNK_12_    SMOKE_12    R11DOCTI    R11DOCTI
+   R11DOCTI
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Optimization Specifications for the Quasi-Newton Algorithm for
+Continuous Outcomes
+  Maximum number of iterations                                 100
+  Convergence criterion                                  0.100D-05
+Optimization Specifications for the EM Algorithm
+  Maximum number of iterations                                 500
+  Convergence criteria
+    Loglikelihood change                                 0.100D-02
+    Relative loglikelihood change                        0.100D-05
+    Derivative                                           0.100D-02
+Optimization Specifications for the M step of the EM Algorithm for
+Categorical Latent variables
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+Optimization Specifications for the M step of the EM Algorithm for
+Censored, Binary or Ordered Categorical (Ordinal), Unordered
+Categorical (Nominal) and Count Outcomes
+  Number of M step iterations                                    1
+  M step convergence criterion                           0.100D-02
+  Basis for M step termination                           ITERATION
+  Maximum value for logit thresholds                            15
+  Minimum value for logit thresholds                           -15
+  Minimum expected cell size for chi-square              0.100D-01
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization algorithm                                         EMA
+Integration Specifications
+  Type                                                    STANDARD
+  Number of integration points                                  15
+  Dimensions of numerical integration                            2
+  Adaptive quadrature                                           ON
+Cholesky                                                       OFF
+
+Input data file(s)
+  mplus_file_df4_pain.dat
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns            24
+     Number of strata                           55
+     Number of clusters                       6908
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT FOR Y
+
+
+           Covariance Coverage
+              ART_1_12      HBP_1_12      OTH_SIN_      HBP_ART       HBP_HRT_
+              ________      ________      ________      ________      ________
+ ART_1_12       1.000
+ HBP_1_12       1.000         1.000
+ OTH_SIN_       1.000         1.000         1.000
+ HBP_ART        1.000         1.000         1.000         1.000
+ HBP_HRT_       1.000         1.000         1.000         1.000         1.000
+ HBP_DIA_       1.000         1.000         1.000         1.000         1.000
+ HBP_DIA_       1.000         1.000         1.000         1.000         1.000
+ HBP_CAN_       1.000         1.000         1.000         1.000         1.000
+ HBP_DIA        1.000         1.000         1.000         1.000         1.000
+ HRT_ART        1.000         1.000         1.000         1.000         1.000
+ CAN_ART        1.000         1.000         1.000         1.000         1.000
+ HBP_LNG_       1.000         1.000         1.000         1.000         1.000
+ OTH_COMB       1.000         1.000         1.000         1.000         1.000
+ R11AGEY_       1.000         1.000         1.000         1.000         1.000
+ FEMALE         1.000         1.000         1.000         1.000         1.000
+ MAR_12         0.999         0.999         0.999         0.999         0.999
+ BLACK          1.000         1.000         1.000         1.000         1.000
+ OTHER          1.000         1.000         1.000         1.000         1.000
+ LATINX         1.000         1.000         1.000         1.000         1.000
+ NONUS_B        0.999         0.999         0.999         0.999         0.999
+ EDUC_C_1       0.999         0.999         0.999         0.999         0.999
+ EDUC_C_3       0.999         0.999         0.999         0.999         0.999
+ INC_Q2_1       1.000         1.000         1.000         1.000         1.000
+ INC_Q3_1       1.000         1.000         1.000         1.000         1.000
+ INC_Q4_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q2_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q3_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q4_1       1.000         1.000         1.000         1.000         1.000
+ BMI_12UN       0.990         0.990         0.990         0.990         0.990
+ BMI_12OW       0.990         0.990         0.990         0.990         0.990
+ BMI_12OB       0.990         0.990         0.990         0.990         0.990
+ VACT_12C       0.997         0.997         0.997         0.997         0.997
+ CH_CIR_1       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_2       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_3       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_4       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_5       1.000         1.000         1.000         1.000         1.000
+ CH_HLTH_       0.999         0.999         0.999         0.999         0.999
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ SMOKE_12       0.992         0.992         0.992         0.992         0.992
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+
+
+           Covariance Coverage
+              HBP_DIA_      HBP_DIA_      HBP_CAN_      HBP_DIA       HRT_ART
+              ________      ________      ________      ________      ________
+ HBP_DIA_       1.000
+ HBP_DIA_       1.000         1.000
+ HBP_CAN_       1.000         1.000         1.000
+ HBP_DIA        1.000         1.000         1.000         1.000
+ HRT_ART        1.000         1.000         1.000         1.000         1.000
+ CAN_ART        1.000         1.000         1.000         1.000         1.000
+ HBP_LNG_       1.000         1.000         1.000         1.000         1.000
+ OTH_COMB       1.000         1.000         1.000         1.000         1.000
+ R11AGEY_       1.000         1.000         1.000         1.000         1.000
+ FEMALE         1.000         1.000         1.000         1.000         1.000
+ MAR_12         0.999         0.999         0.999         0.999         0.999
+ BLACK          1.000         1.000         1.000         1.000         1.000
+ OTHER          1.000         1.000         1.000         1.000         1.000
+ LATINX         1.000         1.000         1.000         1.000         1.000
+ NONUS_B        0.999         0.999         0.999         0.999         0.999
+ EDUC_C_1       0.999         0.999         0.999         0.999         0.999
+ EDUC_C_3       0.999         0.999         0.999         0.999         0.999
+ INC_Q2_1       1.000         1.000         1.000         1.000         1.000
+ INC_Q3_1       1.000         1.000         1.000         1.000         1.000
+ INC_Q4_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q2_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q3_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q4_1       1.000         1.000         1.000         1.000         1.000
+ BMI_12UN       0.990         0.990         0.990         0.990         0.990
+ BMI_12OW       0.990         0.990         0.990         0.990         0.990
+ BMI_12OB       0.990         0.990         0.990         0.990         0.990
+ VACT_12C       0.997         0.997         0.997         0.997         0.997
+ CH_CIR_1       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_2       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_3       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_4       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_5       1.000         1.000         1.000         1.000         1.000
+ CH_HLTH_       0.999         0.999         0.999         0.999         0.999
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ SMOKE_12       0.992         0.992         0.992         0.992         0.992
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+
+
+           Covariance Coverage
+              CAN_ART       HBP_LNG_      OTH_COMB      R11AGEY_      FEMALE
+              ________      ________      ________      ________      ________
+ CAN_ART        1.000
+ HBP_LNG_       1.000         1.000
+ OTH_COMB       1.000         1.000         1.000
+ R11AGEY_       1.000         1.000         1.000         1.000
+ FEMALE         1.000         1.000         1.000         1.000         1.000
+ MAR_12         0.999         0.999         0.999         0.999         0.999
+ BLACK          1.000         1.000         1.000         1.000         1.000
+ OTHER          1.000         1.000         1.000         1.000         1.000
+ LATINX         1.000         1.000         1.000         1.000         1.000
+ NONUS_B        0.999         0.999         0.999         0.999         0.999
+ EDUC_C_1       0.999         0.999         0.999         0.999         0.999
+ EDUC_C_3       0.999         0.999         0.999         0.999         0.999
+ INC_Q2_1       1.000         1.000         1.000         1.000         1.000
+ INC_Q3_1       1.000         1.000         1.000         1.000         1.000
+ INC_Q4_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q2_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q3_1       1.000         1.000         1.000         1.000         1.000
+ WLT_Q4_1       1.000         1.000         1.000         1.000         1.000
+ BMI_12UN       0.990         0.990         0.990         0.990         0.990
+ BMI_12OW       0.990         0.990         0.990         0.990         0.990
+ BMI_12OB       0.990         0.990         0.990         0.990         0.990
+ VACT_12C       0.997         0.997         0.997         0.997         0.997
+ CH_CIR_1       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_2       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_3       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_4       1.000         1.000         1.000         1.000         1.000
+ CH_CIR_5       1.000         1.000         1.000         1.000         1.000
+ CH_HLTH_       0.999         0.999         0.999         0.999         0.999
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ SMOKE_12       0.992         0.992         0.992         0.992         0.992
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+ R11DOCTI       0.939         0.939         0.939         0.939         0.939
+
+
+           Covariance Coverage
+              MAR_12        BLACK         OTHER         LATINX        NONUS_B
+              ________      ________      ________      ________      ________
+ MAR_12         0.999
+ BLACK          0.999         1.000
+ OTHER          0.999         1.000         1.000
+ LATINX         0.999         1.000         1.000         1.000
+ NONUS_B        0.999         0.999         0.999         0.999         0.999
+ EDUC_C_1       0.999         0.999         0.999         0.999         0.999
+ EDUC_C_3       0.999         0.999         0.999         0.999         0.999
+ INC_Q2_1       0.999         1.000         1.000         1.000         0.999
+ INC_Q3_1       0.999         1.000         1.000         1.000         0.999
+ INC_Q4_1       0.999         1.000         1.000         1.000         0.999
+ WLT_Q2_1       0.999         1.000         1.000         1.000         0.999
+ WLT_Q3_1       0.999         1.000         1.000         1.000         0.999
+ WLT_Q4_1       0.999         1.000         1.000         1.000         0.999
+ BMI_12UN       0.990         0.990         0.990         0.990         0.989
+ BMI_12OW       0.990         0.990         0.990         0.990         0.989
+ BMI_12OB       0.990         0.990         0.990         0.990         0.989
+ VACT_12C       0.997         0.997         0.997         0.997         0.996
+ CH_CIR_1       0.999         1.000         1.000         1.000         0.999
+ CH_CIR_2       0.999         1.000         1.000         1.000         0.999
+ CH_CIR_3       0.999         1.000         1.000         1.000         0.999
+ CH_CIR_4       0.999         1.000         1.000         1.000         0.999
+ CH_CIR_5       0.999         1.000         1.000         1.000         0.999
+ CH_HLTH_       0.999         0.999         0.999         0.999         0.998
+ DRNK_12_       0.995         0.995         0.995         0.995         0.994
+ DRNK_12_       0.995         0.995         0.995         0.995         0.994
+ SMOKE_12       0.992         0.992         0.992         0.992         0.992
+ R11DOCTI       0.938         0.939         0.939         0.939         0.938
+ R11DOCTI       0.938         0.939         0.939         0.939         0.938
+ R11DOCTI       0.938         0.939         0.939         0.939         0.938
+
+
+           Covariance Coverage
+              EDUC_C_1      EDUC_C_3      INC_Q2_1      INC_Q3_1      INC_Q4_1
+              ________      ________      ________      ________      ________
+ EDUC_C_1       0.999
+ EDUC_C_3       0.999         0.999
+ INC_Q2_1       0.999         0.999         1.000
+ INC_Q3_1       0.999         0.999         1.000         1.000
+ INC_Q4_1       0.999         0.999         1.000         1.000         1.000
+ WLT_Q2_1       0.999         0.999         1.000         1.000         1.000
+ WLT_Q3_1       0.999         0.999         1.000         1.000         1.000
+ WLT_Q4_1       0.999         0.999         1.000         1.000         1.000
+ BMI_12UN       0.990         0.990         0.990         0.990         0.990
+ BMI_12OW       0.990         0.990         0.990         0.990         0.990
+ BMI_12OB       0.990         0.990         0.990         0.990         0.990
+ VACT_12C       0.996         0.996         0.997         0.997         0.997
+ CH_CIR_1       0.999         0.999         1.000         1.000         1.000
+ CH_CIR_2       0.999         0.999         1.000         1.000         1.000
+ CH_CIR_3       0.999         0.999         1.000         1.000         1.000
+ CH_CIR_4       0.999         0.999         1.000         1.000         1.000
+ CH_CIR_5       0.999         0.999         1.000         1.000         1.000
+ CH_HLTH_       0.998         0.998         0.999         0.999         0.999
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ DRNK_12_       0.995         0.995         0.995         0.995         0.995
+ SMOKE_12       0.992         0.992         0.992         0.992         0.992
+ R11DOCTI       0.938         0.938         0.939         0.939         0.939
+ R11DOCTI       0.938         0.938         0.939         0.939         0.939
+ R11DOCTI       0.938         0.938         0.939         0.939         0.939
+
+
+           Covariance Coverage
+              WLT_Q2_1      WLT_Q3_1      WLT_Q4_1      BMI_12UN      BMI_12OW
+              ________      ________      ________      ________      ________
+ WLT_Q2_1       1.000
+ WLT_Q3_1       1.000         1.000
+ WLT_Q4_1       1.000         1.000         1.000
+ BMI_12UN       0.990         0.990         0.990         0.990
+ BMI_12OW       0.990         0.990         0.990         0.990         0.990
+ BMI_12OB       0.990         0.990         0.990         0.990         0.990
+ VACT_12C       0.997         0.997         0.997         0.988         0.988
+ CH_CIR_1       1.000         1.000         1.000         0.990         0.990
+ CH_CIR_2       1.000         1.000         1.000         0.990         0.990
+ CH_CIR_3       1.000         1.000         1.000         0.990         0.990
+ CH_CIR_4       1.000         1.000         1.000         0.990         0.990
+ CH_CIR_5       1.000         1.000         1.000         0.990         0.990
+ CH_HLTH_       0.999         0.999         0.999         0.990         0.990
+ DRNK_12_       0.995         0.995         0.995         0.986         0.986
+ DRNK_12_       0.995         0.995         0.995         0.986         0.986
+ SMOKE_12       0.992         0.992         0.992         0.983         0.983
+ R11DOCTI       0.939         0.939         0.939         0.931         0.931
+ R11DOCTI       0.939         0.939         0.939         0.931         0.931
+ R11DOCTI       0.939         0.939         0.939         0.931         0.931
+
+
+           Covariance Coverage
+              BMI_12OB      VACT_12C      CH_CIR_1      CH_CIR_2      CH_CIR_3
+              ________      ________      ________      ________      ________
+ BMI_12OB       0.990
+ VACT_12C       0.988         0.997
+ CH_CIR_1       0.990         0.997         1.000
+ CH_CIR_2       0.990         0.997         1.000         1.000
+ CH_CIR_3       0.990         0.997         1.000         1.000         1.000
+ CH_CIR_4       0.990         0.997         1.000         1.000         1.000
+ CH_CIR_5       0.990         0.997         1.000         1.000         1.000
+ CH_HLTH_       0.990         0.996         0.999         0.999         0.999
+ DRNK_12_       0.986         0.992         0.995         0.995         0.995
+ DRNK_12_       0.986         0.992         0.995         0.995         0.995
+ SMOKE_12       0.983         0.990         0.992         0.992         0.992
+ R11DOCTI       0.931         0.937         0.939         0.939         0.939
+ R11DOCTI       0.931         0.937         0.939         0.939         0.939
+ R11DOCTI       0.931         0.937         0.939         0.939         0.939
+
+
+           Covariance Coverage
+              CH_CIR_4      CH_CIR_5      CH_HLTH_      DRNK_12_      DRNK_12_
+              ________      ________      ________      ________      ________
+ CH_CIR_4       1.000
+ CH_CIR_5       1.000         1.000
+ CH_HLTH_       0.999         0.999         0.999
+ DRNK_12_       0.995         0.995         0.994         0.995
+ DRNK_12_       0.995         0.995         0.994         0.995         0.995
+ SMOKE_12       0.992         0.992         0.992         0.988         0.988
+ R11DOCTI       0.939         0.939         0.938         0.935         0.935
+ R11DOCTI       0.939         0.939         0.938         0.935         0.935
+ R11DOCTI       0.939         0.939         0.938         0.935         0.935
+
+
+           Covariance Coverage
+              SMOKE_12      R11DOCTI      R11DOCTI      R11DOCTI
+              ________      ________      ________      ________
+ SMOKE_12       0.992
+ R11DOCTI       0.932         0.939
+ R11DOCTI       0.932         0.939         0.939
+ R11DOCTI       0.932         0.939         0.939         0.939
+
+
+COUNT PROPORTION OF ZERO, MINIMUM AND MAXIMUM VALUES
+
+      R11CESD     0.242         0         8
+      R12CESD     0.257         0         8
+      R13CESD     0.266         0         8
+      R14CESD     0.271         0         8
+      R15CESD     0.269         0         8
+
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     ART_1_12              0.092       2.819       0.000   91.61%       0.000      0.000      0.000
+            9004.000       0.084       5.949       1.000    8.39%       0.000      0.000
+     HBP_1_12              0.068       3.432       0.000   93.58%       0.000      0.000      0.000
+            9004.000       0.063       9.779       1.000    6.42%       0.000      0.000
+     OTH_SIN_COND_12       0.039       4.730       0.000   96.39%       0.000      0.000      0.000
+            9004.000       0.038      20.368       1.000    3.61%       0.000      0.000
+     HBP_ART               0.143       2.042       0.000   85.38%       0.000      0.000      0.000
+            9004.000       0.122       2.169       1.000   14.62%       0.000      0.000
+     HBP_HRT_ART           0.069       3.392       0.000   92.86%       0.000      0.000      0.000
+            9004.000       0.064       9.507       1.000    7.14%       0.000      0.000
+     HBP_DIA_ART           0.057       3.832       0.000   93.87%       0.000      0.000      0.000
+            9004.000       0.054      12.683       1.000    6.13%       0.000      0.000
+     HBP_DIA_HRT_ART       0.038       4.851       0.000   96.06%       0.000      0.000      0.000
+            9004.000       0.036      21.529       1.000    3.94%       0.000      0.000
+     HBP_CAN_ART           0.035       5.026       0.000   96.35%       0.000      0.000      0.000
+            9004.000       0.034      23.262       1.000    3.65%       0.000      0.000
+     HBP_DIA               0.025       6.112       0.000   97.47%       0.000      0.000      0.000
+            9004.000       0.024      35.352       1.000    2.53%       0.000      0.000
+     HRT_ART               0.024       6.182       0.000   97.75%       0.000      0.000      0.000
+            9004.000       0.024      36.221       1.000    2.25%       0.000      0.000
+     CAN_ART               0.024       6.262       0.000   97.85%       0.000      0.000      0.000
+            9004.000       0.023      37.214       1.000    2.15%       0.000      0.000
+     HBP_LNG_ART           0.020       6.918       0.000   97.96%       0.000      0.000      0.000
+            9004.000       0.019      45.853       1.000    2.04%       0.000      0.000
+     OTH_COMB              0.298       0.881       0.000   68.81%       0.000      0.000      0.000
+            9004.000       0.209      -1.224       1.000   31.19%       0.000      1.000
+     R11AGEY_B             0.000       0.719      -9.214    5.28%      -5.214     -1.214     -0.214
+            9004.000      53.760      -0.248      27.786    0.01%       1.786      6.786
+     FEMALE                0.000      -0.284      -0.570   41.31%      -0.570     -0.570      0.430
+            9004.000       0.245      -1.919       0.430   58.69%       0.430      0.430
+     MAR_12                0.000      -0.384      -0.594   39.86%      -0.594      0.406      0.406
+            8999.000       0.241      -1.853       0.406   60.14%       0.406      0.406
+     BLACK                 0.000       3.004      -0.084   86.44%      -0.084     -0.084     -0.084
+            9002.000       0.077       7.022       0.916   13.56%      -0.084     -0.084
+     OTHER                 0.000       6.417      -0.023   97.98%      -0.023     -0.023     -0.023
+            9002.000       0.022      39.172       0.977    2.02%      -0.023     -0.023
+     LATINX                0.000       3.375      -0.070   91.40%      -0.070     -0.070     -0.070
+            9003.000       0.065       9.388       0.930    8.60%      -0.070     -0.070
+     NONUS_B               0.000       2.923      -0.087   90.11%      -0.087     -0.087     -0.087
+            8996.000       0.080       6.546       0.913    9.89%      -0.087     -0.087
+     EDUC_C_1              0.000       1.547      -0.194   77.54%      -0.194     -0.194     -0.194
+            8998.000       0.156       0.393       0.806   22.46%      -0.194      0.806
+     EDUC_C_3              0.000       0.141      -0.465   57.37%      -0.465     -0.465     -0.465
+            8998.000       0.249      -1.980       0.535   42.63%       0.535      0.535
+     INC_Q2_12             0.000       1.155      -0.250   73.19%      -0.250     -0.250     -0.250
+            9004.000       0.187      -0.666       0.750   26.81%      -0.250      0.750
+     INC_Q3_12             0.000       1.154      -0.250   75.28%      -0.250     -0.250     -0.250
+            9004.000       0.188      -0.669       0.750   24.72%      -0.250      0.750
+     INC_Q4_12             0.000       1.156      -0.250   78.58%      -0.250     -0.250     -0.250
+            9004.000       0.187      -0.663       0.750   21.42%      -0.250      0.750
+     WLT_Q2_12             0.000       1.158      -0.249   73.76%      -0.249     -0.249     -0.249
+            9004.000       0.187      -0.658       0.751   26.24%      -0.249      0.751
+     WLT_Q3_12             0.000       1.153      -0.250   75.77%      -0.250     -0.250     -0.250
+            9004.000       0.188      -0.670       0.750   24.23%      -0.250      0.750
+     WLT_Q4_12             0.000       1.157      -0.250   77.48%      -0.250     -0.250     -0.250
+            9004.000       0.187      -0.662       0.750   22.52%      -0.250      0.750
+     BMI_12UN              0.000       7.738      -0.016   98.26%      -0.016     -0.016     -0.016
+            8917.000       0.016      57.875       0.984    1.74%      -0.016     -0.016
+     BMI_12OW              0.000       0.479      -0.384   62.24%      -0.384     -0.384     -0.384
+            8917.000       0.236      -1.771       0.616   37.76%      -0.384      0.616
+     BMI_12OB              0.000       0.886      -0.298   70.16%      -0.298     -0.298     -0.298
+            8917.000       0.209      -1.216       0.702   29.84%      -0.298      0.702
+     VACT_12C              0.000       1.269      -0.232   77.92%      -0.232     -0.232     -0.232
+            8978.000       0.178      -0.389       0.768   22.08%      -0.232      0.768
+     CH_CIR_1              0.000       0.990      -0.278   73.23%      -0.278     -0.278     -0.278
+            9004.000       0.201      -1.021       0.722   26.77%      -0.278      0.722
+     CH_CIR_2              0.000       1.514      -0.198   79.81%      -0.198     -0.198     -0.198
+            9004.000       0.159       0.294       0.802   20.19%      -0.198      0.802
+     CH_CIR_3              0.000       1.685      -0.178   80.73%      -0.178     -0.178     -0.178
+            9004.000       0.146       0.840       0.822   19.27%      -0.178     -0.178
+     CH_CIR_4              0.000       2.664      -0.100   89.03%      -0.100     -0.100     -0.100
+            9004.000       0.090       5.097       0.900   10.97%      -0.100     -0.100
+     CH_CIR_5              0.000       4.285      -0.047   94.88%      -0.047     -0.047     -0.047
+            9004.000       0.045      16.358       0.953    5.12%      -0.047     -0.047
+     CH_HLTH_P             0.000       3.841      -0.057   93.92%      -0.057     -0.057     -0.057
+            8996.000       0.053      12.754       0.943    6.08%      -0.057     -0.057
+     DRNK_12_1             0.000       0.860      -0.302   71.79%      -0.302     -0.302     -0.302
+            8961.000       0.211      -1.260       0.698   28.21%      -0.302      0.698
+     DRNK_12_2             0.000       4.085      -0.051   95.46%      -0.051     -0.051     -0.051
+            8961.000       0.048      14.683       0.949    4.54%      -0.051     -0.051
+     SMOKE_12              0.000       2.778      -0.094   91.29%      -0.094     -0.094     -0.094
+            8936.000       0.085       5.719       0.906    8.71%      -0.094     -0.094
+     R11DOCTIM_Q2          0.000       1.011      -0.274   73.02%      -0.274     -0.274     -0.274
+            8454.000       0.199      -0.977       0.726   26.98%      -0.274      0.726
+     R11DOCTIM_Q3          0.000       1.112      -0.257   74.53%      -0.257     -0.257     -0.257
+            8454.000       0.191      -0.763       0.743   25.47%      -0.257      0.743
+     R11DOCTIM_Q4          0.000       1.494      -0.201   79.93%      -0.201     -0.201     -0.201
+            8454.000       0.160       0.233       0.799   20.07%      -0.201      0.799
+
+
+     WARNING:  THE VARIANCE CONTRIBUTION FROM A STRATUM WITH A SINGLE CLUSTER
+     (PSU) IS BASED ON THE DIFFERENCE BETWEEN THE SINGLE CLUSTER VALUE AND
+     THE OVERALL CLUSTER MEAN.
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                     1127
+
+Loglikelihood
+
+          H0 Value                     -132420.695
+          H0 Scaling Correction Factor      1.5940
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                  267095.391
+          Bayesian (BIC)                275103.204
+          Sample-Size Adjusted BIC      271521.787
+            (n* = (n + 2) / 24)
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ DEP_I      ON
+    ART_1_12           0.402      0.100      4.014      0.000
+    HBP_1_12           0.099      0.117      0.846      0.398
+    OTH_SIN_CO         0.089      0.133      0.670      0.503
+    HBP_ART            0.515      0.095      5.429      0.000
+    HBP_HRT_AR         0.693      0.107      6.448      0.000
+    HBP_DIA_AR         0.600      0.110      5.440      0.000
+    HBP_DIA_HR         0.804      0.114      7.038      0.000
+    HBP_CAN_AR         0.464      0.132      3.505      0.000
+    HBP_DIA            0.139      0.160      0.868      0.386
+    HRT_ART            0.604      0.169      3.570      0.000
+    CAN_ART            0.509      0.146      3.477      0.001
+    HBP_LNG_AR         0.857      0.125      6.834      0.000
+    OTH_COMB           0.715      0.090      7.963      0.000
+    R11AGEY_B         -0.022      0.004     -5.222      0.000
+    FEMALE             0.215      0.040      5.441      0.000
+    MAR_12            -0.186      0.047     -3.937      0.000
+    BLACK             -0.043      0.052     -0.817      0.414
+    OTHER              0.343      0.106      3.252      0.001
+    LATINX             0.119      0.076      1.570      0.116
+    NONUS_B            0.154      0.066      2.335      0.020
+    EDUC_C_1           0.222      0.051      4.364      0.000
+    EDUC_C_3          -0.091      0.044     -2.066      0.039
+    INC_Q2_12         -0.086      0.054     -1.588      0.112
+    INC_Q3_12         -0.235      0.062     -3.802      0.000
+    INC_Q4_12         -0.294      0.069     -4.254      0.000
+    WLT_Q2_12         -0.061      0.051     -1.198      0.231
+    WLT_Q3_12         -0.247      0.057     -4.316      0.000
+    WLT_Q4_12         -0.251      0.065     -3.853      0.000
+    BMI_12UN           0.201      0.165      1.215      0.225
+    BMI_12OW           0.015      0.049      0.295      0.768
+    BMI_12OB           0.058      0.049      1.178      0.239
+    VACT_12C          -0.265      0.048     -5.565      0.000
+    CH_CIR_1          -0.030      0.057     -0.533      0.594
+    CH_CIR_2           0.059      0.060      0.984      0.325
+    CH_CIR_3           0.121      0.065      1.853      0.064
+    CH_CIR_4           0.207      0.073      2.818      0.005
+    CH_CIR_5           0.302      0.089      3.386      0.001
+    CH_HLTH_P          0.246      0.066      3.756      0.000
+    DRNK_12_1         -0.105      0.046     -2.314      0.021
+    DRNK_12_2          0.093      0.087      1.073      0.283
+    SMOKE_12           0.241      0.061      3.982      0.000
+    R11DOCTIM_        -0.031      0.053     -0.591      0.554
+    R11DOCTIM_         0.136      0.055      2.474      0.013
+    R11DOCTIM_         0.292      0.055      5.304      0.000
+
+ DEP_S      ON
+    ART_1_12          -0.028      0.023     -1.218      0.223
+    HBP_1_12           0.003      0.025      0.122      0.903
+    OTH_SIN_CO         0.019      0.029      0.671      0.502
+    HBP_ART           -0.023      0.021     -1.112      0.266
+    HBP_HRT_AR        -0.022      0.023     -0.978      0.328
+    HBP_DIA_AR        -0.014      0.026     -0.545      0.585
+    HBP_DIA_HR        -0.025      0.026     -0.966      0.334
+    HBP_CAN_AR         0.002      0.027      0.090      0.928
+    HBP_DIA           -0.005      0.035     -0.135      0.893
+    HRT_ART           -0.022      0.039     -0.564      0.572
+    CAN_ART           -0.009      0.031     -0.310      0.756
+    HBP_LNG_AR        -0.079      0.034     -2.334      0.020
+    OTH_COMB          -0.033      0.020     -1.653      0.098
+    R11AGEY_B          0.000      0.001     -0.208      0.835
+    FEMALE             0.000      0.009     -0.001      0.999
+    MAR_12             0.033      0.010      3.233      0.001
+    BLACK              0.015      0.012      1.322      0.186
+    OTHER             -0.070      0.023     -3.009      0.003
+    LATINX            -0.025      0.016     -1.532      0.125
+    NONUS_B            0.024      0.014      1.689      0.091
+    EDUC_C_1           0.003      0.010      0.254      0.800
+    EDUC_C_3           0.003      0.010      0.295      0.768
+    INC_Q2_12          0.008      0.011      0.711      0.477
+    INC_Q3_12          0.017      0.013      1.312      0.190
+    INC_Q4_12          0.036      0.015      2.356      0.018
+    WLT_Q2_12          0.007      0.011      0.675      0.500
+    WLT_Q3_12          0.015      0.012      1.219      0.223
+    WLT_Q4_12          0.010      0.014      0.722      0.471
+    BMI_12UN           0.021      0.034      0.608      0.543
+    BMI_12OW          -0.011      0.010     -1.103      0.270
+    BMI_12OB           0.000      0.011      0.037      0.970
+    VACT_12C          -0.002      0.010     -0.240      0.810
+    CH_CIR_1          -0.005      0.013     -0.411      0.681
+    CH_CIR_2          -0.008      0.013     -0.574      0.566
+    CH_CIR_3          -0.005      0.014     -0.339      0.735
+    CH_CIR_4          -0.020      0.016     -1.309      0.191
+    CH_CIR_5          -0.007      0.018     -0.380      0.704
+    CH_HLTH_P          0.009      0.016      0.563      0.573
+    DRNK_12_1          0.010      0.010      1.068      0.285
+    DRNK_12_2          0.029      0.021      1.349      0.177
+    SMOKE_12           0.014      0.016      0.850      0.395
+    R11DOCTIM_         0.024      0.011      2.133      0.033
+    R11DOCTIM_         0.011      0.011      1.001      0.317
+    R11DOCTIM_         0.003      0.012      0.252      0.801
+
+ DEP_S    WITH
+    DEP_I             -0.039      0.006     -6.609      0.000
+
+ HBP_1_12 WITH
+    ART_1_12          -0.006      0.000    -16.489      0.000
+
+ OTH_SIN_ WITH
+    ART_1_12          -0.004      0.000    -13.584      0.000
+    HBP_1_12          -0.003      0.000    -12.679      0.000
+
+ HBP_ART  WITH
+    ART_1_12          -0.013      0.001    -21.291      0.000
+    HBP_1_12          -0.010      0.001    -18.483      0.000
+    OTH_SIN_CO        -0.006      0.000    -14.483      0.000
+
+ HBP_HRT_ WITH
+    ART_1_12          -0.006      0.000    -17.384      0.000
+    HBP_1_12          -0.005      0.000    -16.016      0.000
+    OTH_SIN_CO        -0.003      0.000    -13.031      0.000
+    HBP_ART           -0.010      0.001    -19.662      0.000
+
+ HBP_DIA_ WITH
+    ART_1_12          -0.005      0.000    -16.243      0.000
+    HBP_1_12          -0.004      0.000    -14.920      0.000
+    OTH_SIN_CO        -0.002      0.000    -12.567      0.000
+    HBP_ART           -0.008      0.000    -17.974      0.000
+    HBP_HRT_AR        -0.004      0.000    -15.400      0.000
+
+ HBP_DIA_ WITH
+    ART_1_12          -0.003      0.000    -13.884      0.000
+    HBP_1_12          -0.003      0.000    -12.883      0.000
+    OTH_SIN_CO        -0.001      0.000    -11.425      0.000
+    HBP_ART           -0.005      0.000    -14.799      0.000
+    HBP_HRT_AR        -0.003      0.000    -13.312      0.000
+    HBP_DIA_AR        -0.002      0.000    -12.727      0.000
+
+ HBP_CAN_ WITH
+    ART_1_12          -0.003      0.000    -13.768      0.000
+    HBP_1_12          -0.002      0.000    -13.007      0.000
+    OTH_SIN_CO        -0.001      0.000    -11.299      0.000
+    HBP_ART           -0.005      0.000    -14.671      0.000
+    HBP_HRT_AR        -0.002      0.000    -13.383      0.000
+    HBP_DIA_AR        -0.002      0.000    -12.695      0.000
+    HBP_DIA_HR        -0.001      0.000    -11.475      0.000
+
+ HBP_DIA  WITH
+    ART_1_12          -0.002      0.000    -10.992      0.000
+    HBP_1_12          -0.002      0.000    -10.502      0.000
+    OTH_SIN_CO        -0.001      0.000     -9.598      0.000
+    HBP_ART           -0.004      0.000    -11.434      0.000
+    HBP_HRT_AR        -0.002      0.000    -10.727      0.000
+    HBP_DIA_AR        -0.001      0.000    -10.330      0.000
+    HBP_DIA_HR        -0.001      0.000     -9.745      0.000
+    HBP_CAN_AR        -0.001      0.000     -9.698      0.000
+
+ HRT_ART  WITH
+    ART_1_12          -0.002      0.000    -11.238      0.000
+    HBP_1_12          -0.002      0.000    -10.779      0.000
+    OTH_SIN_CO        -0.001      0.000     -9.733      0.000
+    HBP_ART           -0.003      0.000    -11.779      0.000
+    HBP_HRT_AR        -0.002      0.000    -11.013      0.000
+    HBP_DIA_AR        -0.001      0.000    -10.670      0.000
+    HBP_DIA_HR        -0.001      0.000     -9.838      0.000
+    HBP_CAN_AR        -0.001      0.000     -9.818      0.000
+    HBP_DIA           -0.001      0.000     -8.667      0.000
+
+ CAN_ART  WITH
+    ART_1_12          -0.002      0.000    -11.181      0.000
+    HBP_1_12          -0.002      0.000    -10.717      0.000
+    OTH_SIN_CO        -0.001      0.000     -9.615      0.000
+    HBP_ART           -0.003      0.000    -11.674      0.000
+    HBP_HRT_AR        -0.002      0.000    -10.929      0.000
+    HBP_DIA_AR        -0.001      0.000    -10.523      0.000
+    HBP_DIA_HR        -0.001      0.000     -9.816      0.000
+    HBP_CAN_AR        -0.001      0.000     -9.832      0.000
+    HBP_DIA           -0.001      0.000     -8.639      0.000
+    HRT_ART           -0.001      0.000     -8.713      0.000
+
+ HBP_LNG_ WITH
+    ART_1_12          -0.002      0.000    -10.862      0.000
+    HBP_1_12          -0.001      0.000    -10.433      0.000
+    OTH_SIN_CO        -0.001      0.000     -9.534      0.000
+    HBP_ART           -0.003      0.000    -11.394      0.000
+    HBP_HRT_AR        -0.001      0.000    -10.669      0.000
+    HBP_DIA_AR        -0.001      0.000    -10.366      0.000
+    HBP_DIA_HR        -0.001      0.000     -9.662      0.000
+    HBP_CAN_AR        -0.001      0.000     -9.550      0.000
+    HBP_DIA            0.000      0.000     -8.540      0.000
+    HRT_ART            0.000      0.000     -8.660      0.000
+    CAN_ART            0.000      0.000     -8.613      0.000
+
+ OTH_COMB WITH
+    ART_1_12          -0.028      0.001    -24.654      0.000
+    HBP_1_12          -0.020      0.001    -20.634      0.000
+    OTH_SIN_CO        -0.012      0.001    -15.392      0.000
+    HBP_ART           -0.043      0.001    -31.985      0.000
+    HBP_HRT_AR        -0.021      0.001    -22.203      0.000
+    HBP_DIA_AR        -0.017      0.001    -19.568      0.000
+    HBP_DIA_HR        -0.011      0.001    -15.808      0.000
+    HBP_CAN_AR        -0.011      0.001    -15.714      0.000
+    HBP_DIA           -0.007      0.001    -11.843      0.000
+    HRT_ART           -0.007      0.001    -12.224      0.000
+    CAN_ART           -0.007      0.001    -12.126      0.000
+    HBP_LNG_AR        -0.006      0.000    -11.814      0.000
+
+ R11AGEY_ WITH
+    ART_1_12          -0.119      0.026     -4.603      0.000
+    HBP_1_12          -0.094      0.025     -3.765      0.000
+    OTH_SIN_CO        -0.045      0.017     -2.628      0.009
+    HBP_ART            0.007      0.032      0.226      0.821
+    HBP_HRT_AR         0.158      0.025      6.342      0.000
+    HBP_DIA_AR        -0.058      0.020     -2.919      0.004
+    HBP_DIA_HR        -0.019      0.017     -1.124      0.261
+    HBP_CAN_AR         0.071      0.018      3.934      0.000
+    HBP_DIA           -0.056      0.014     -3.941      0.000
+    HRT_ART            0.025      0.017      1.483      0.138
+    CAN_ART            0.014      0.014      0.956      0.339
+    HBP_LNG_AR        -0.012      0.012     -1.058      0.290
+    OTH_COMB           0.326      0.043      7.642      0.000
+
+ FEMALE   WITH
+    ART_1_12           0.013      0.002      7.519      0.000
+    HBP_1_12          -0.004      0.002     -2.442      0.015
+    OTH_SIN_CO        -0.007      0.001     -5.080      0.000
+    HBP_ART            0.015      0.002      7.429      0.000
+    HBP_HRT_AR         0.004      0.001      2.521      0.012
+    HBP_DIA_AR         0.004      0.001      2.799      0.005
+    HBP_DIA_HR        -0.002      0.001     -1.295      0.195
+    HBP_CAN_AR         0.002      0.001      1.871      0.061
+    HBP_DIA           -0.003      0.001     -3.070      0.002
+    HRT_ART           -0.003      0.001     -2.616      0.009
+    CAN_ART            0.003      0.001      2.918      0.004
+    HBP_LNG_AR         0.003      0.001      4.281      0.000
+    OTH_COMB          -0.024      0.003     -8.440      0.000
+    R11AGEY_B          0.223      0.041      5.488      0.000
+
+ MAR_12   WITH
+    ART_1_12          -0.001      0.002     -0.381      0.703
+    HBP_1_12           0.003      0.002      1.877      0.061
+    OTH_SIN_CO         0.001      0.001      0.575      0.565
+    HBP_ART           -0.001      0.002     -0.441      0.659
+    HBP_HRT_AR        -0.002      0.002     -1.417      0.157
+    HBP_DIA_AR        -0.003      0.001     -1.782      0.075
+    HBP_DIA_HR         0.001      0.001      1.148      0.251
+    HBP_CAN_AR        -0.001      0.001     -0.848      0.397
+    HBP_DIA           -0.001      0.001     -0.480      0.631
+    HRT_ART            0.001      0.001      1.164      0.244
+    CAN_ART            0.000      0.001     -0.171      0.864
+    HBP_LNG_AR        -0.002      0.001     -2.477      0.013
+    OTH_COMB          -0.002      0.003     -0.609      0.542
+    R11AGEY_B         -0.862      0.050    -17.126      0.000
+    FEMALE            -0.067      0.003    -26.609      0.000
+
+ BLACK    WITH
+    ART_1_12          -0.002      0.001     -2.587      0.010
+    HBP_1_12           0.001      0.001      1.397      0.162
+    OTH_SIN_CO        -0.002      0.000     -3.991      0.000
+    HBP_ART            0.001      0.001      1.351      0.177
+    HBP_HRT_AR        -0.001      0.001     -0.826      0.409
+    HBP_DIA_AR         0.004      0.001      5.267      0.000
+    HBP_DIA_HR         0.000      0.001      0.376      0.707
+    HBP_CAN_AR        -0.001      0.000     -1.163      0.245
+    HBP_DIA            0.001      0.000      1.345      0.179
+    HRT_ART           -0.001      0.000     -2.914      0.004
+    CAN_ART           -0.001      0.000     -4.567      0.000
+    HBP_LNG_AR         0.000      0.000     -0.585      0.559
+    OTH_COMB           0.001      0.001      1.008      0.314
+    R11AGEY_B         -0.078      0.023     -3.445      0.001
+    FEMALE             0.004      0.001      3.056      0.002
+    MAR_12            -0.017      0.002    -10.344      0.000
+
+ OTHER    WITH
+    ART_1_12          -0.001      0.000     -2.262      0.024
+    HBP_1_12           0.000      0.001      0.318      0.751
+    OTH_SIN_CO         0.000      0.000     -1.717      0.086
+    HBP_ART            0.000      0.001     -0.199      0.842
+    HBP_HRT_AR        -0.001      0.000     -1.719      0.086
+    HBP_DIA_AR         0.001      0.001      1.565      0.117
+    HBP_DIA_HR         0.000      0.000     -0.524      0.600
+    HBP_CAN_AR        -0.001      0.000     -4.477      0.000
+    HBP_DIA            0.001      0.001      1.991      0.047
+    HRT_ART            0.000      0.000     -2.206      0.027
+    CAN_ART            0.000      0.000     -3.841      0.000
+    HBP_LNG_AR         0.000      0.000     -2.222      0.026
+    OTH_COMB           0.001      0.001      0.997      0.319
+    R11AGEY_B         -0.046      0.015     -3.027      0.002
+    FEMALE             0.000      0.001      0.160      0.873
+    MAR_12            -0.001      0.001     -0.655      0.512
+    BLACK             -0.002      0.000    -10.084      0.000
+
+ LATINX   WITH
+    ART_1_12          -0.001      0.001     -0.719      0.472
+    HBP_1_12           0.002      0.001      1.823      0.068
+    OTH_SIN_CO         0.000      0.001      0.481      0.630
+    HBP_ART           -0.001      0.001     -0.596      0.551
+    HBP_HRT_AR        -0.002      0.001     -2.972      0.003
+    HBP_DIA_AR         0.005      0.001      4.967      0.000
+    HBP_DIA_HR         0.001      0.001      1.611      0.107
+    HBP_CAN_AR        -0.001      0.000     -3.609      0.000
+    HBP_DIA            0.002      0.001      2.536      0.011
+    HRT_ART           -0.001      0.000     -1.621      0.105
+    CAN_ART           -0.001      0.000     -2.485      0.013
+    HBP_LNG_AR         0.000      0.000      0.394      0.694
+    OTH_COMB          -0.004      0.001     -3.213      0.001
+    R11AGEY_B         -0.076      0.024     -3.146      0.002
+    FEMALE             0.001      0.001      0.701      0.484
+    MAR_12            -0.002      0.002     -1.377      0.169
+    BLACK             -0.006      0.000    -17.320      0.000
+    OTHER             -0.002      0.000     -9.701      0.000
+
+ NONUS_B  WITH
+    ART_1_12           0.000      0.001     -0.295      0.768
+    HBP_1_12           0.003      0.001      2.563      0.010
+    OTH_SIN_CO         0.001      0.001      1.487      0.137
+    HBP_ART           -0.002      0.001     -2.010      0.044
+    HBP_HRT_AR        -0.002      0.001     -2.968      0.003
+    HBP_DIA_AR         0.002      0.001      2.835      0.005
+    HBP_DIA_HR         0.000      0.001     -0.152      0.879
+    HBP_CAN_AR        -0.001      0.001     -2.222      0.026
+    HBP_DIA            0.002      0.001      2.441      0.015
+    HRT_ART            0.000      0.001     -0.900      0.368
+    CAN_ART           -0.001      0.000     -2.373      0.018
+    HBP_LNG_AR         0.000      0.000      0.192      0.848
+    OTH_COMB          -0.003      0.002     -1.955      0.051
+    R11AGEY_B          0.001      0.025      0.046      0.964
+    FEMALE             0.002      0.001      1.667      0.096
+    MAR_12             0.001      0.002      0.402      0.687
+    BLACK             -0.002      0.001     -2.574      0.010
+    OTHER              0.006      0.001      5.495      0.000
+    LATINX             0.032      0.002     14.974      0.000
+
+ EDUC_C_1 WITH
+    ART_1_12          -0.004      0.001     -2.878      0.004
+    HBP_1_12          -0.002      0.001     -1.523      0.128
+    OTH_SIN_CO        -0.003      0.001     -3.569      0.000
+    HBP_ART            0.002      0.002      1.114      0.265
+    HBP_HRT_AR         0.000      0.001     -0.400      0.689
+    HBP_DIA_AR         0.005      0.001      3.743      0.000
+    HBP_DIA_HR         0.001      0.001      0.609      0.543
+    HBP_CAN_AR        -0.002      0.001     -2.058      0.040
+    HBP_DIA            0.000      0.001      0.141      0.888
+    HRT_ART           -0.002      0.001     -2.824      0.005
+    CAN_ART           -0.001      0.001     -2.021      0.043
+    HBP_LNG_AR         0.001      0.001      1.889      0.059
+    OTH_COMB           0.009      0.002      3.969      0.000
+    R11AGEY_B          0.236      0.038      6.278      0.000
+    FEMALE             0.002      0.002      0.793      0.428
+    MAR_12            -0.017      0.002     -7.035      0.000
+    BLACK              0.015      0.001     10.255      0.000
+    OTHER              0.000      0.001     -0.145      0.885
+    LATINX             0.028      0.002     13.794      0.000
+    NONUS_B            0.021      0.002     10.511      0.000
+
+ EDUC_C_3 WITH
+    ART_1_12           0.004      0.002      1.897      0.058
+    HBP_1_12           0.004      0.002      2.357      0.018
+    OTH_SIN_CO         0.005      0.001      3.570      0.000
+    HBP_ART           -0.003      0.002     -1.616      0.106
+    HBP_HRT_AR        -0.002      0.002     -1.059      0.290
+    HBP_DIA_AR        -0.006      0.001     -4.595      0.000
+    HBP_DIA_HR        -0.001      0.001     -0.935      0.350
+    HBP_CAN_AR         0.002      0.001      1.736      0.083
+    HBP_DIA            0.000      0.001      0.134      0.893
+    HRT_ART            0.003      0.001      2.554      0.011
+    CAN_ART            0.003      0.001      3.116      0.002
+    HBP_LNG_AR        -0.002      0.001     -2.242      0.025
+    OTH_COMB          -0.011      0.003     -4.086      0.000
+    R11AGEY_B         -0.370      0.049     -7.601      0.000
+    FEMALE            -0.019      0.003     -6.616      0.000
+    MAR_12             0.027      0.003      8.251      0.000
+    BLACK             -0.013      0.001     -8.621      0.000
+    OTHER              0.001      0.001      1.210      0.226
+    LATINX            -0.017      0.002    -10.705      0.000
+    NONUS_B           -0.008      0.002     -4.479      0.000
+    EDUC_C_1          -0.090      0.002    -44.797      0.000
+
+ INC_Q2_1 WITH
+    ART_1_12          -0.002      0.001     -1.512      0.131
+    HBP_1_12          -0.003      0.001     -2.047      0.041
+    OTH_SIN_CO        -0.001      0.001     -0.792      0.428
+    HBP_ART            0.002      0.002      1.112      0.266
+    HBP_HRT_AR         0.001      0.001      0.512      0.608
+    HBP_DIA_AR        -0.001      0.001     -0.475      0.635
+    HBP_DIA_HR         0.003      0.001      2.504      0.012
+    HBP_CAN_AR         0.000      0.001      0.251      0.802
+    HBP_DIA           -0.001      0.001     -1.181      0.238
+    HRT_ART           -0.001      0.001     -0.750      0.453
+    CAN_ART           -0.001      0.001     -0.948      0.343
+    HBP_LNG_AR         0.001      0.001      0.908      0.364
+    OTH_COMB           0.004      0.002      1.465      0.143
+    R11AGEY_B          0.259      0.043      6.064      0.000
+    FEMALE             0.006      0.002      2.778      0.005
+    MAR_12            -0.006      0.003     -1.911      0.056
+    BLACK             -0.002      0.001     -1.769      0.077
+    OTHER             -0.001      0.001     -1.221      0.222
+    LATINX            -0.004      0.001     -2.538      0.011
+    NONUS_B           -0.006      0.001     -3.830      0.000
+    EDUC_C_1           0.004      0.002      2.076      0.038
+    EDUC_C_3          -0.021      0.003     -7.613      0.000
+
+ INC_Q3_1 WITH
+    ART_1_12           0.002      0.002      1.159      0.247
+    HBP_1_12           0.002      0.002      1.461      0.144
+    OTH_SIN_CO         0.002      0.001      1.868      0.062
+    HBP_ART           -0.001      0.002     -0.380      0.704
+    HBP_HRT_AR         0.001      0.001      0.480      0.631
+    HBP_DIA_AR        -0.002      0.001     -1.794      0.073
+    HBP_DIA_HR        -0.001      0.001     -1.523      0.128
+    HBP_CAN_AR         0.001      0.001      0.760      0.447
+    HBP_DIA           -0.002      0.001     -2.615      0.009
+    HRT_ART            0.001      0.001      1.407      0.160
+    CAN_ART            0.000      0.001      0.022      0.983
+    HBP_LNG_AR         0.000      0.001     -0.479      0.632
+    OTH_COMB          -0.001      0.002     -0.404      0.686
+    R11AGEY_B         -0.154      0.044     -3.517      0.000
+    FEMALE            -0.012      0.002     -5.847      0.000
+    MAR_12             0.037      0.003     12.878      0.000
+    BLACK             -0.007      0.001     -5.501      0.000
+    OTHER              0.001      0.001      0.504      0.614
+    LATINX            -0.007      0.001     -4.839      0.000
+    NONUS_B           -0.005      0.001     -3.336      0.001
+    EDUC_C_1          -0.018      0.002     -9.355      0.000
+    EDUC_C_3           0.012      0.003      4.135      0.000
+    INC_Q2_12         -0.063      0.002    -34.580      0.000
+
+ INC_Q4_1 WITH
+    ART_1_12           0.003      0.002      1.887      0.059
+    HBP_1_12           0.003      0.002      1.838      0.066
+    OTH_SIN_CO         0.001      0.001      1.042      0.297
+    HBP_ART           -0.001      0.002     -0.715      0.475
+    HBP_HRT_AR        -0.004      0.001     -2.838      0.005
+    HBP_DIA_AR        -0.001      0.001     -1.050      0.294
+    HBP_DIA_HR        -0.002      0.001     -1.864      0.062
+    HBP_CAN_AR         0.000      0.001     -0.196      0.845
+    HBP_DIA            0.002      0.001      1.624      0.104
+    HRT_ART            0.001      0.001      0.876      0.381
+    CAN_ART            0.002      0.001      1.782      0.075
+    HBP_LNG_AR        -0.003      0.001     -4.853      0.000
+    OTH_COMB          -0.011      0.002     -4.501      0.000
+    R11AGEY_B         -0.667      0.045    -14.963      0.000
+    FEMALE            -0.032      0.002    -14.804      0.000
+    MAR_12             0.063      0.003     22.408      0.000
+    BLACK             -0.010      0.001     -8.397      0.000
+    OTHER             -0.001      0.001     -1.192      0.233
+    LATINX            -0.012      0.001     -9.704      0.000
+    NONUS_B           -0.005      0.002     -2.922      0.003
+    EDUC_C_1          -0.035      0.002    -19.552      0.000
+    EDUC_C_3           0.065      0.003     21.796      0.000
+    INC_Q2_12         -0.062      0.002    -34.701      0.000
+    INC_Q3_12         -0.062      0.002    -34.870      0.000
+
+ WLT_Q2_1 WITH
+    ART_1_12          -0.001      0.002     -0.439      0.661
+    HBP_1_12          -0.001      0.001     -0.585      0.558
+    OTH_SIN_CO        -0.003      0.001     -3.171      0.002
+    HBP_ART           -0.002      0.002     -1.000      0.317
+    HBP_HRT_AR         0.003      0.001      1.865      0.062
+    HBP_DIA_AR         0.004      0.001      2.672      0.008
+    HBP_DIA_HR         0.001      0.001      1.137      0.256
+    HBP_CAN_AR        -0.001      0.001     -0.884      0.377
+    HBP_DIA            0.000      0.001      0.463      0.644
+    HRT_ART            0.000      0.001     -0.221      0.825
+    CAN_ART           -0.001      0.001     -1.681      0.093
+    HBP_LNG_AR         0.000      0.001      0.542      0.588
+    OTH_COMB           0.003      0.002      1.229      0.219
+    R11AGEY_B          0.089      0.044      2.006      0.045
+    FEMALE             0.002      0.002      1.023      0.306
+    MAR_12            -0.004      0.003     -1.499      0.134
+    BLACK              0.003      0.001      1.760      0.078
+    OTHER             -0.001      0.001     -0.653      0.514
+    LATINX             0.000      0.001     -0.154      0.878
+    NONUS_B           -0.004      0.001     -2.853      0.004
+    EDUC_C_1           0.008      0.002      3.442      0.001
+    EDUC_C_3          -0.027      0.003     -9.949      0.000
+    INC_Q2_12          0.024      0.003      8.479      0.000
+    INC_Q3_12         -0.002      0.003     -0.929      0.353
+    INC_Q4_12         -0.028      0.003    -11.177      0.000
+
+ WLT_Q3_1 WITH
+    ART_1_12           0.003      0.002      1.616      0.106
+    HBP_1_12           0.000      0.001      0.232      0.816
+    OTH_SIN_CO         0.000      0.001      0.332      0.740
+    HBP_ART            0.004      0.002      2.312      0.021
+    HBP_HRT_AR         0.000      0.001      0.141      0.888
+    HBP_DIA_AR        -0.002      0.001     -1.568      0.117
+    HBP_DIA_HR         0.000      0.001     -0.053      0.957
+    HBP_CAN_AR         0.001      0.001      0.674      0.500
+    HBP_DIA           -0.001      0.001     -0.828      0.408
+    HRT_ART            0.001      0.001      0.636      0.525
+    CAN_ART            0.000      0.001      0.119      0.906
+    HBP_LNG_AR        -0.002      0.001     -3.033      0.002
+    OTH_COMB          -0.005      0.002     -2.318      0.020
+    R11AGEY_B          0.011      0.045      0.250      0.802
+    FEMALE            -0.004      0.002     -1.698      0.090
+    MAR_12             0.020      0.003      6.868      0.000
+    BLACK             -0.011      0.001    -10.117      0.000
+    OTHER             -0.002      0.001     -2.588      0.010
+    LATINX            -0.006      0.001     -4.520      0.000
+    NONUS_B           -0.006      0.001     -4.208      0.000
+    EDUC_C_1          -0.020      0.002    -10.391      0.000
+    EDUC_C_3           0.014      0.003      5.010      0.000
+    INC_Q2_12          0.004      0.003      1.645      0.100
+    INC_Q3_12          0.021      0.003      6.932      0.000
+    INC_Q4_12          0.000      0.003      0.091      0.928
+    WLT_Q2_12         -0.062      0.002    -34.726      0.000
+
+ WLT_Q4_1 WITH
+    ART_1_12           0.005      0.002      3.018      0.003
+    HBP_1_12           0.004      0.002      2.562      0.010
+    OTH_SIN_CO         0.005      0.001      4.054      0.000
+    HBP_ART           -0.001      0.002     -0.314      0.754
+    HBP_HRT_AR        -0.003      0.001     -2.235      0.025
+    HBP_DIA_AR        -0.007      0.001     -6.685      0.000
+    HBP_DIA_HR        -0.004      0.001     -4.137      0.000
+    HBP_CAN_AR         0.002      0.001      1.830      0.067
+    HBP_DIA           -0.001      0.001     -0.658      0.510
+    HRT_ART            0.002      0.001      2.301      0.021
+    CAN_ART            0.005      0.001      4.140      0.000
+    HBP_LNG_AR        -0.001      0.001     -1.621      0.105
+    OTH_COMB          -0.015      0.002     -6.271      0.000
+    R11AGEY_B         -0.128      0.045     -2.829      0.005
+    FEMALE            -0.014      0.002     -6.921      0.000
+    MAR_12             0.042      0.003     14.364      0.000
+    BLACK             -0.016      0.001    -15.163      0.000
+    OTHER             -0.001      0.001     -0.615      0.538
+    LATINX            -0.013      0.001    -11.834      0.000
+    NONUS_B           -0.002      0.002     -1.464      0.143
+    EDUC_C_1          -0.033      0.002    -18.511      0.000
+    EDUC_C_3           0.059      0.003     20.175      0.000
+    INC_Q2_12         -0.030      0.002    -12.655      0.000
+    INC_Q3_12          0.008      0.003      2.743      0.006
+    INC_Q4_12          0.073      0.003     21.043      0.000
+    WLT_Q2_12         -0.062      0.002    -34.492      0.000
+    WLT_Q3_12         -0.062      0.002    -34.985      0.000
+
+ BMI_12UN WITH
+    ART_1_12           0.000      0.000      0.214      0.830
+    HBP_1_12          -0.001      0.000     -2.662      0.008
+    OTH_SIN_CO         0.001      0.000      1.968      0.049
+    HBP_ART            0.000      0.000     -0.896      0.370
+    HBP_HRT_AR        -0.001      0.000     -3.958      0.000
+    HBP_DIA_AR        -0.001      0.000     -6.538      0.000
+    HBP_DIA_HR         0.000      0.000     -1.853      0.064
+    HBP_CAN_AR         0.000      0.000      0.147      0.883
+    HBP_DIA            0.000      0.000     -0.157      0.876
+    HRT_ART            0.000      0.000      0.505      0.613
+    CAN_ART            0.000      0.000      1.169      0.242
+    HBP_LNG_AR         0.000      0.000      0.424      0.672
+    OTH_COMB           0.000      0.001      0.171      0.864
+    R11AGEY_B          0.035      0.012      2.855      0.004
+    FEMALE             0.003      0.001      4.296      0.000
+    MAR_12            -0.002      0.001     -2.680      0.007
+    BLACK              0.000      0.000      0.057      0.955
+    OTHER              0.000      0.000      0.380      0.704
+    LATINX            -0.001      0.000     -2.678      0.007
+    NONUS_B            0.000      0.000      0.547      0.584
+    EDUC_C_1           0.000      0.001     -0.649      0.516
+    EDUC_C_3           0.000      0.001      0.020      0.984
+    INC_Q2_12          0.000      0.001      0.042      0.967
+    INC_Q3_12          0.000      0.001      0.744      0.457
+    INC_Q4_12         -0.002      0.001     -3.974      0.000
+    WLT_Q2_12          0.000      0.001     -0.301      0.763
+    WLT_Q3_12          0.000      0.001      0.412      0.680
+    WLT_Q4_12          0.000      0.001     -0.513      0.608
+
+ BMI_12OW WITH
+    ART_1_12          -0.003      0.002     -1.809      0.070
+    HBP_1_12           0.002      0.002      1.264      0.206
+    OTH_SIN_CO         0.001      0.001      0.560      0.575
+    HBP_ART            0.003      0.002      1.260      0.208
+    HBP_HRT_AR         0.002      0.001      1.477      0.140
+    HBP_DIA_AR        -0.002      0.001     -1.694      0.090
+    HBP_DIA_HR        -0.002      0.001     -2.132      0.033
+    HBP_CAN_AR         0.002      0.001      1.991      0.046
+    HBP_DIA            0.001      0.001      0.672      0.502
+    HRT_ART           -0.001      0.001     -0.738      0.461
+    CAN_ART            0.000      0.001      0.433      0.665
+    HBP_LNG_AR        -0.001      0.001     -0.973      0.331
+    OTH_COMB          -0.001      0.003     -0.279      0.780
+    R11AGEY_B         -0.057      0.046     -1.261      0.207
+    FEMALE            -0.030      0.003     -9.977      0.000
+    MAR_12             0.015      0.003      4.900      0.000
+    BLACK             -0.003      0.001     -2.250      0.024
+    OTHER             -0.001      0.001     -1.076      0.282
+    LATINX             0.001      0.002      0.470      0.638
+    NONUS_B            0.000      0.002      0.079      0.937
+    EDUC_C_1           0.003      0.002      1.144      0.253
+    EDUC_C_3           0.001      0.003      0.242      0.809
+    INC_Q2_12         -0.001      0.003     -0.302      0.762
+    INC_Q3_12          0.000      0.003     -0.184      0.854
+    INC_Q4_12          0.008      0.003      2.919      0.004
+    WLT_Q2_12         -0.005      0.003     -1.974      0.048
+    WLT_Q3_12          0.005      0.003      1.775      0.076
+    WLT_Q4_12          0.005      0.003      1.878      0.060
+    BMI_12UN          -0.006      0.001    -11.044      0.000
+
+ BMI_12OB WITH
+    ART_1_12          -0.010      0.002     -6.462      0.000
+    HBP_1_12          -0.005      0.001     -3.517      0.000
+    OTH_SIN_CO        -0.007      0.001     -7.475      0.000
+    HBP_ART            0.004      0.002      1.828      0.068
+    HBP_HRT_AR         0.001      0.001      0.467      0.640
+    HBP_DIA_AR         0.014      0.002      8.739      0.000
+    HBP_DIA_HR         0.010      0.001      7.646      0.000
+    HBP_CAN_AR         0.000      0.001      0.083      0.934
+    HBP_DIA            0.002      0.001      1.633      0.103
+    HRT_ART           -0.003      0.001     -4.354      0.000
+    CAN_ART           -0.003      0.001     -4.072      0.000
+    HBP_LNG_AR         0.002      0.001      2.014      0.044
+    OTH_COMB           0.007      0.003      2.674      0.007
+    R11AGEY_B         -0.594      0.042    -14.231      0.000
+    FEMALE             0.003      0.003      0.960      0.337
+    MAR_12             0.002      0.003      0.739      0.460
+    BLACK              0.008      0.001      5.812      0.000
+    OTHER              0.001      0.001      0.706      0.480
+    LATINX             0.001      0.002      0.386      0.700
+    NONUS_B           -0.003      0.002     -2.070      0.038
+    EDUC_C_1           0.001      0.002      0.450      0.652
+    EDUC_C_3          -0.007      0.003     -2.522      0.012
+    INC_Q2_12          0.001      0.002      0.394      0.694
+    INC_Q3_12          0.003      0.003      1.086      0.277
+    INC_Q4_12         -0.002      0.003     -0.574      0.566
+    WLT_Q2_12          0.009      0.003      3.430      0.001
+    WLT_Q3_12         -0.007      0.003     -2.844      0.004
+    WLT_Q4_12         -0.015      0.003     -5.924      0.000
+    BMI_12UN          -0.005      0.000    -10.994      0.000
+    BMI_12OW          -0.114      0.002    -55.768      0.000
+
+ VACT_12C WITH
+    ART_1_12           0.007      0.002      4.060      0.000
+    HBP_1_12           0.007      0.002      4.229      0.000
+    OTH_SIN_CO         0.003      0.001      2.382      0.017
+    HBP_ART           -0.001      0.002     -0.638      0.523
+    HBP_HRT_AR        -0.002      0.001     -1.447      0.148
+    HBP_DIA_AR        -0.004      0.001     -3.981      0.000
+    HBP_DIA_HR        -0.003      0.001     -3.047      0.002
+    HBP_CAN_AR         0.000      0.001      0.262      0.794
+    HBP_DIA            0.000      0.001     -0.312      0.755
+    HRT_ART            0.000      0.001      0.584      0.559
+    CAN_ART            0.002      0.001      2.386      0.017
+    HBP_LNG_AR        -0.002      0.001     -4.217      0.000
+    OTH_COMB          -0.016      0.002     -7.189      0.000
+    R11AGEY_B         -0.294      0.038     -7.657      0.000
+    FEMALE            -0.017      0.003     -6.378      0.000
+    MAR_12             0.020      0.003      7.349      0.000
+    BLACK             -0.006      0.001     -5.116      0.000
+    OTHER              0.001      0.001      1.015      0.310
+    LATINX            -0.003      0.001     -2.226      0.026
+    NONUS_B            0.002      0.002      1.109      0.268
+    EDUC_C_1          -0.019      0.002    -10.718      0.000
+    EDUC_C_3           0.031      0.003     11.241      0.000
+    INC_Q2_12         -0.007      0.002     -3.160      0.002
+    INC_Q3_12          0.008      0.002      3.450      0.001
+    INC_Q4_12          0.023      0.003      8.331      0.000
+    WLT_Q2_12         -0.011      0.002     -4.795      0.000
+    WLT_Q3_12          0.007      0.002      2.976      0.003
+    WLT_Q4_12          0.027      0.003      9.919      0.000
+    BMI_12UN          -0.001      0.001     -1.793      0.073
+    BMI_12OW           0.011      0.003      4.110      0.000
+    BMI_12OB          -0.018      0.002     -7.759      0.000
+
+ CH_CIR_1 WITH
+    ART_1_12           0.004      0.002      2.267      0.023
+    HBP_1_12           0.002      0.002      1.289      0.197
+    OTH_SIN_CO        -0.002      0.001     -1.430      0.153
+    HBP_ART            0.000      0.002      0.248      0.804
+    HBP_HRT_AR        -0.001      0.001     -0.511      0.609
+    HBP_DIA_AR        -0.003      0.001     -2.821      0.005
+    HBP_DIA_HR        -0.001      0.001     -0.780      0.435
+    HBP_CAN_AR         0.001      0.001      1.352      0.176
+    HBP_DIA            0.000      0.001      0.509      0.611
+    HRT_ART            0.000      0.001     -0.068      0.946
+    CAN_ART            0.000      0.001      0.279      0.780
+    HBP_LNG_AR         0.000      0.001      0.551      0.581
+    OTH_COMB          -0.003      0.003     -1.225      0.221
+    R11AGEY_B         -0.135      0.042     -3.250      0.001
+    FEMALE             0.002      0.003      0.768      0.443
+    MAR_12             0.008      0.003      2.871      0.004
+    BLACK             -0.009      0.001     -8.099      0.000
+    OTHER             -0.002      0.001     -1.887      0.059
+    LATINX            -0.013      0.001    -11.147      0.000
+    NONUS_B           -0.008      0.001     -5.657      0.000
+    EDUC_C_1          -0.025      0.002    -13.139      0.000
+    EDUC_C_3           0.013      0.003      4.482      0.000
+    INC_Q2_12          0.000      0.002      0.204      0.838
+    INC_Q3_12          0.010      0.002      4.176      0.000
+    INC_Q4_12          0.007      0.003      2.791      0.005
+    WLT_Q2_12         -0.002      0.002     -0.928      0.353
+    WLT_Q3_12          0.008      0.003      3.189      0.001
+    WLT_Q4_12          0.010      0.003      4.054      0.000
+    BMI_12UN           0.000      0.001      0.348      0.728
+    BMI_12OW           0.001      0.003      0.288      0.773
+    BMI_12OB           0.003      0.003      1.073      0.283
+    VACT_12C           0.006      0.002      2.459      0.014
+
+ CH_CIR_2 WITH
+    ART_1_12          -0.002      0.001     -1.260      0.208
+    HBP_1_12           0.000      0.001     -0.227      0.821
+    OTH_SIN_CO         0.001      0.001      0.704      0.481
+    HBP_ART            0.000      0.002      0.215      0.829
+    HBP_HRT_AR        -0.001      0.001     -0.592      0.554
+    HBP_DIA_AR         0.001      0.001      0.621      0.534
+    HBP_DIA_HR         0.002      0.001      2.035      0.042
+    HBP_CAN_AR         0.000      0.001     -0.030      0.976
+    HBP_DIA           -0.001      0.001     -0.935      0.350
+    HRT_ART            0.000      0.001      0.342      0.732
+    CAN_ART           -0.002      0.001     -3.357      0.001
+    HBP_LNG_AR         0.000      0.001      0.215      0.830
+    OTH_COMB           0.003      0.002      1.155      0.248
+    R11AGEY_B          0.101      0.038      2.684      0.007
+    FEMALE            -0.001      0.002     -0.612      0.540
+    MAR_12            -0.004      0.002     -1.488      0.137
+    BLACK              0.001      0.001      0.528      0.597
+    OTHER              0.000      0.001     -0.522      0.601
+    LATINX            -0.001      0.001     -0.915      0.360
+    NONUS_B           -0.002      0.001     -1.805      0.071
+    EDUC_C_1          -0.002      0.002     -0.971      0.332
+    EDUC_C_3          -0.011      0.002     -4.681      0.000
+    INC_Q2_12          0.002      0.002      0.899      0.368
+    INC_Q3_12          0.005      0.002      2.431      0.015
+    INC_Q4_12         -0.008      0.002     -3.858      0.000
+    WLT_Q2_12          0.005      0.002      2.203      0.028
+    WLT_Q3_12          0.000      0.002      0.110      0.912
+    WLT_Q4_12         -0.008      0.002     -3.825      0.000
+    BMI_12UN           0.000      0.001      0.183      0.855
+    BMI_12OW          -0.001      0.002     -0.491      0.624
+    BMI_12OB           0.000      0.002      0.140      0.889
+    VACT_12C          -0.005      0.002     -2.267      0.023
+    CH_CIR_1          -0.055      0.001    -37.325      0.000
+
+ CH_CIR_3 WITH
+    ART_1_12          -0.002      0.001     -1.734      0.083
+    HBP_1_12          -0.002      0.001     -1.837      0.066
+    OTH_SIN_CO         0.000      0.001     -0.512      0.609
+    HBP_ART            0.001      0.002      0.735      0.462
+    HBP_HRT_AR         0.002      0.001      1.648      0.099
+    HBP_DIA_AR         0.003      0.001      2.297      0.022
+    HBP_DIA_HR        -0.001      0.001     -1.417      0.157
+    HBP_CAN_AR        -0.001      0.001     -1.232      0.218
+    HBP_DIA            0.001      0.001      1.319      0.187
+    HRT_ART           -0.001      0.001     -1.937      0.053
+    CAN_ART            0.001      0.001      1.427      0.154
+    HBP_LNG_AR         0.000      0.001     -0.603      0.547
+    OTH_COMB           0.004      0.002      1.779      0.075
+    R11AGEY_B          0.156      0.036      4.358      0.000
+    FEMALE             0.005      0.002      2.328      0.020
+    MAR_12            -0.007      0.002     -2.981      0.003
+    BLACK              0.007      0.001      5.485      0.000
+    OTHER              0.001      0.001      0.978      0.328
+    LATINX             0.011      0.002      7.403      0.000
+    NONUS_B            0.007      0.002      4.362      0.000
+    EDUC_C_1           0.022      0.002     10.766      0.000
+    EDUC_C_3          -0.028      0.002    -12.088      0.000
+    INC_Q2_12          0.001      0.002      0.555      0.579
+    INC_Q3_12         -0.005      0.002     -2.579      0.010
+    INC_Q4_12         -0.014      0.002     -7.241      0.000
+    WLT_Q2_12          0.002      0.002      1.054      0.292
+    WLT_Q3_12         -0.005      0.002     -2.334      0.020
+    WLT_Q4_12         -0.013      0.002     -7.109      0.000
+    BMI_12UN           0.000      0.001      0.254      0.800
+    BMI_12OW           0.004      0.002      1.559      0.119
+    BMI_12OB           0.001      0.002      0.538      0.591
+    VACT_12C          -0.006      0.002     -3.006      0.003
+    CH_CIR_1          -0.049      0.001    -35.294      0.000
+    CH_CIR_2          -0.035      0.001    -31.305      0.000
+
+ CH_CIR_4 WITH
+    ART_1_12          -0.001      0.001     -1.384      0.166
+    HBP_1_12          -0.002      0.001     -2.535      0.011
+    OTH_SIN_CO        -0.002      0.001     -2.787      0.005
+    HBP_ART           -0.001      0.001     -0.923      0.356
+    HBP_HRT_AR         0.003      0.001      2.917      0.004
+    HBP_DIA_AR         0.001      0.001      0.678      0.498
+    HBP_DIA_HR         0.001      0.001      1.421      0.155
+    HBP_CAN_AR        -0.001      0.001     -1.625      0.104
+    HBP_DIA            0.001      0.001      1.021      0.307
+    HRT_ART            0.001      0.001      1.308      0.191
+    CAN_ART           -0.001      0.000     -2.270      0.023
+    HBP_LNG_AR         0.000      0.000     -0.874      0.382
+    OTH_COMB           0.003      0.002      1.823      0.068
+    R11AGEY_B          0.135      0.029      4.642      0.000
+    FEMALE            -0.003      0.002     -1.626      0.104
+    MAR_12            -0.007      0.002     -3.878      0.000
+    BLACK              0.008      0.001      6.828      0.000
+    OTHER              0.001      0.001      1.706      0.088
+    LATINX             0.009      0.001      6.528      0.000
+    NONUS_B            0.005      0.001      3.879      0.000
+    EDUC_C_1           0.025      0.002     13.157      0.000
+    EDUC_C_3          -0.022      0.002    -12.471      0.000
+    INC_Q2_12          0.003      0.002      2.066      0.039
+    INC_Q3_12         -0.009      0.001     -6.636      0.000
+    INC_Q4_12         -0.012      0.001     -8.298      0.000
+    WLT_Q2_12          0.006      0.002      3.721      0.000
+    WLT_Q3_12         -0.006      0.001     -4.032      0.000
+    WLT_Q4_12         -0.013      0.001     -9.741      0.000
+    BMI_12UN           0.000      0.000     -0.589      0.556
+    BMI_12OW          -0.001      0.002     -0.661      0.508
+    BMI_12OB           0.001      0.002      0.309      0.758
+    VACT_12C          -0.005      0.001     -3.849      0.000
+    CH_CIR_1          -0.028      0.001    -26.472      0.000
+    CH_CIR_2          -0.020      0.001    -24.596      0.000
+    CH_CIR_3          -0.018      0.001    -23.703      0.000
+
+ CH_CIR_5 WITH
+    ART_1_12           0.000      0.001     -0.192      0.848
+    HBP_1_12           0.000      0.001      0.599      0.549
+    OTH_SIN_CO         0.000      0.000     -0.775      0.438
+    HBP_ART           -0.001      0.001     -1.461      0.144
+    HBP_HRT_AR        -0.001      0.000     -1.857      0.063
+    HBP_DIA_AR         0.002      0.001      2.669      0.008
+    HBP_DIA_HR         0.001      0.001      1.399      0.162
+    HBP_CAN_AR         0.000      0.000     -1.249      0.212
+    HBP_DIA           -0.001      0.000     -3.084      0.002
+    HRT_ART            0.000      0.000     -1.452      0.146
+    CAN_ART           -0.001      0.000     -2.488      0.013
+    HBP_LNG_AR         0.000      0.000      1.108      0.268
+    OTH_COMB           0.002      0.001      1.609      0.108
+    R11AGEY_B          0.008      0.020      0.389      0.697
+    FEMALE            -0.001      0.001     -0.622      0.534
+    MAR_12            -0.003      0.001     -2.292      0.022
+    BLACK              0.005      0.001      5.072      0.000
+    OTHER              0.001      0.001      1.719      0.086
+    LATINX             0.005      0.001      5.132      0.000
+    NONUS_B            0.002      0.001      2.356      0.018
+    EDUC_C_1           0.012      0.001      8.836      0.000
+    EDUC_C_3          -0.009      0.001     -7.592      0.000
+    INC_Q2_12          0.002      0.001      1.777      0.075
+    INC_Q3_12         -0.003      0.001     -3.140      0.002
+    INC_Q4_12         -0.006      0.001     -5.855      0.000
+    WLT_Q2_12          0.002      0.001      2.008      0.045
+    WLT_Q3_12         -0.003      0.001     -3.411      0.001
+    WLT_Q4_12         -0.006      0.001     -6.392      0.000
+    BMI_12UN           0.000      0.000     -1.861      0.063
+    BMI_12OW           0.002      0.001      1.809      0.070
+    BMI_12OB           0.000      0.001      0.267      0.790
+    VACT_12C          -0.003      0.001     -2.617      0.009
+    CH_CIR_1          -0.013      0.001    -17.864      0.000
+    CH_CIR_2          -0.009      0.001    -17.130      0.000
+    CH_CIR_3          -0.008      0.000    -16.948      0.000
+    CH_CIR_4          -0.005      0.000    -15.522      0.000
+
+ CH_HLTH_ WITH
+    ART_1_12           0.000      0.001      0.202      0.840
+    HBP_1_12          -0.001      0.001     -2.464      0.014
+    OTH_SIN_CO        -0.001      0.000     -3.165      0.002
+    HBP_ART           -0.001      0.001     -0.856      0.392
+    HBP_HRT_AR         0.000      0.001     -0.103      0.918
+    HBP_DIA_AR         0.001      0.001      0.725      0.468
+    HBP_DIA_HR         0.000      0.001     -0.119      0.905
+    HBP_CAN_AR         0.000      0.000     -0.653      0.514
+    HBP_DIA           -0.001      0.000     -4.328      0.000
+    HRT_ART            0.000      0.001      0.800      0.424
+    CAN_ART            0.000      0.000      0.528      0.597
+    HBP_LNG_AR         0.000      0.000      0.808      0.419
+    OTH_COMB           0.004      0.001      3.259      0.001
+    R11AGEY_B          0.012      0.021      0.578      0.563
+    FEMALE             0.004      0.001      2.695      0.007
+    MAR_12            -0.004      0.001     -2.690      0.007
+    BLACK              0.001      0.001      1.778      0.075
+    OTHER              0.000      0.000     -0.928      0.354
+    LATINX             0.004      0.001      3.691      0.000
+    NONUS_B            0.004      0.001      3.028      0.002
+    EDUC_C_1           0.008      0.001      6.288      0.000
+    EDUC_C_3          -0.005      0.001     -3.876      0.000
+    INC_Q2_12          0.001      0.001      0.816      0.415
+    INC_Q3_12         -0.003      0.001     -3.028      0.002
+    INC_Q4_12         -0.005      0.001     -3.859      0.000
+    WLT_Q2_12         -0.001      0.001     -0.427      0.669
+    WLT_Q3_12         -0.002      0.001     -1.542      0.123
+    WLT_Q4_12         -0.005      0.001     -4.088      0.000
+    BMI_12UN           0.000      0.000     -0.493      0.622
+    BMI_12OW           0.001      0.001      0.866      0.387
+    BMI_12OB          -0.001      0.001     -0.615      0.539
+    VACT_12C          -0.004      0.001     -3.448      0.001
+    CH_CIR_1          -0.005      0.001     -4.806      0.000
+    CH_CIR_2           0.000      0.001     -0.273      0.785
+    CH_CIR_3           0.003      0.001      2.796      0.005
+    CH_CIR_4           0.004      0.001      3.697      0.000
+    CH_CIR_5           0.003      0.001      3.661      0.000
+
+ DRNK_12_ WITH
+    ART_1_12           0.005      0.002      2.681      0.007
+    HBP_1_12           0.006      0.002      3.895      0.000
+    OTH_SIN_CO         0.003      0.001      2.652      0.008
+    HBP_ART            0.000      0.002      0.168      0.866
+    HBP_HRT_AR        -0.001      0.001     -0.546      0.585
+    HBP_DIA_AR        -0.007      0.001     -5.539      0.000
+    HBP_DIA_HR        -0.006      0.001     -6.218      0.000
+    HBP_CAN_AR         0.002      0.001      2.107      0.035
+    HBP_DIA            0.000      0.001      0.131      0.896
+    HRT_ART            0.001      0.001      1.419      0.156
+    CAN_ART            0.002      0.001      1.653      0.098
+    HBP_LNG_AR        -0.001      0.001     -1.564      0.118
+    OTH_COMB          -0.014      0.003     -5.577      0.000
+    R11AGEY_B         -0.159      0.044     -3.602      0.000
+    FEMALE            -0.035      0.003    -12.792      0.000
+    MAR_12             0.020      0.003      6.896      0.000
+    BLACK             -0.010      0.001     -7.814      0.000
+    OTHER             -0.003      0.001     -3.804      0.000
+    LATINX            -0.007      0.001     -5.897      0.000
+    NONUS_B           -0.001      0.002     -0.596      0.551
+    EDUC_C_1          -0.026      0.002    -13.160      0.000
+    EDUC_C_3           0.041      0.003     13.983      0.000
+    INC_Q2_12         -0.015      0.002     -6.076      0.000
+    INC_Q3_12          0.014      0.003      5.183      0.000
+    INC_Q4_12          0.033      0.003     11.129      0.000
+    WLT_Q2_12         -0.017      0.002     -7.065      0.000
+    WLT_Q3_12          0.010      0.003      3.638      0.000
+    WLT_Q4_12          0.040      0.003     13.864      0.000
+    BMI_12UN           0.000      0.001     -0.477      0.633
+    BMI_12OW           0.010      0.003      3.633      0.000
+    BMI_12OB          -0.012      0.003     -4.613      0.000
+    VACT_12C           0.024      0.003      9.063      0.000
+    CH_CIR_1           0.009      0.003      3.298      0.001
+    CH_CIR_2          -0.002      0.002     -1.083      0.279
+    CH_CIR_3          -0.011      0.002     -5.275      0.000
+    CH_CIR_4          -0.009      0.002     -5.782      0.000
+    CH_CIR_5          -0.003      0.001     -2.203      0.028
+    CH_HLTH_P         -0.004      0.001     -3.384      0.001
+
+ DRNK_12_ WITH
+    ART_1_12           0.001      0.001      0.759      0.448
+    HBP_1_12           0.001      0.001      1.323      0.186
+    OTH_SIN_CO         0.000      0.001      0.380      0.704
+    HBP_ART            0.004      0.001      3.609      0.000
+    HBP_HRT_AR        -0.001      0.001     -1.021      0.307
+    HBP_DIA_AR        -0.002      0.000     -4.107      0.000
+    HBP_DIA_HR        -0.001      0.000     -4.628      0.000
+    HBP_CAN_AR         0.000      0.000     -0.263      0.793
+    HBP_DIA           -0.001      0.000     -3.625      0.000
+    HRT_ART            0.000      0.001      0.444      0.657
+    CAN_ART            0.000      0.000     -0.254      0.800
+    HBP_LNG_AR         0.000      0.000     -0.358      0.720
+    OTH_COMB          -0.003      0.001     -2.146      0.032
+    R11AGEY_B         -0.116      0.021     -5.584      0.000
+    FEMALE            -0.002      0.001     -1.619      0.105
+    MAR_12             0.004      0.001      2.873      0.004
+    BLACK             -0.002      0.001     -4.120      0.000
+    OTHER             -0.001      0.000     -4.008      0.000
+    LATINX            -0.002      0.001     -3.326      0.001
+    NONUS_B           -0.001      0.001     -1.419      0.156
+    EDUC_C_1          -0.004      0.001     -4.006      0.000
+    EDUC_C_3           0.008      0.002      5.307      0.000
+    INC_Q2_12         -0.002      0.001     -1.552      0.121
+    INC_Q3_12          0.001      0.001      0.672      0.501
+    INC_Q4_12          0.006      0.002      3.936      0.000
+    WLT_Q2_12         -0.001      0.001     -0.800      0.423
+    WLT_Q3_12         -0.001      0.001     -0.545      0.586
+    WLT_Q4_12          0.005      0.001      3.698      0.000
+    BMI_12UN           0.001      0.001      1.549      0.121
+    BMI_12OW           0.001      0.001      0.852      0.394
+    BMI_12OB          -0.005      0.001     -4.513      0.000
+    VACT_12C           0.005      0.001      3.608      0.000
+    CH_CIR_1           0.000      0.001     -0.175      0.861
+    CH_CIR_2          -0.001      0.001     -0.826      0.409
+    CH_CIR_3          -0.003      0.001     -3.480      0.001
+    CH_CIR_4          -0.001      0.001     -2.103      0.035
+    CH_CIR_5          -0.001      0.000     -2.516      0.012
+    CH_HLTH_P         -0.001      0.001     -1.748      0.080
+    DRNK_12_1         -0.015      0.001    -16.630      0.000
+
+ SMOKE_12 WITH
+    ART_1_12          -0.001      0.001     -1.056      0.291
+    HBP_1_12           0.000      0.001      0.283      0.778
+    OTH_SIN_CO         0.001      0.001      1.357      0.175
+    HBP_ART           -0.002      0.001     -1.133      0.257
+    HBP_HRT_AR        -0.002      0.001     -2.530      0.011
+    HBP_DIA_AR        -0.003      0.001     -4.457      0.000
+    HBP_DIA_HR        -0.001      0.001     -2.335      0.020
+    HBP_CAN_AR        -0.002      0.000     -6.339      0.000
+    HBP_DIA            0.001      0.001      0.714      0.475
+    HRT_ART            0.000      0.001     -0.330      0.742
+    CAN_ART           -0.001      0.000     -1.674      0.094
+    HBP_LNG_AR         0.003      0.001      3.511      0.000
+    OTH_COMB           0.005      0.002      2.508      0.012
+    R11AGEY_B         -0.290      0.027    -10.631      0.000
+    FEMALE            -0.003      0.002     -1.750      0.080
+    MAR_12            -0.010      0.002     -5.088      0.000
+    BLACK              0.002      0.001      2.032      0.042
+    OTHER              0.001      0.001      0.874      0.382
+    LATINX             0.001      0.001      0.653      0.514
+    NONUS_B           -0.001      0.001     -0.793      0.428
+    EDUC_C_1           0.009      0.002      5.037      0.000
+    EDUC_C_3          -0.011      0.002     -5.506      0.000
+    INC_Q2_12          0.000      0.002      0.286      0.775
+    INC_Q3_12         -0.002      0.002     -1.326      0.185
+    INC_Q4_12         -0.010      0.002     -6.512      0.000
+    WLT_Q2_12         -0.001      0.002     -0.492      0.623
+    WLT_Q3_12         -0.005      0.002     -2.782      0.005
+    WLT_Q4_12         -0.012      0.001     -8.460      0.000
+    BMI_12UN           0.003      0.001      3.921      0.000
+    BMI_12OW          -0.002      0.002     -1.002      0.316
+    BMI_12OB          -0.011      0.002     -6.636      0.000
+    VACT_12C          -0.010      0.001     -6.844      0.000
+    CH_CIR_1          -0.001      0.002     -0.322      0.748
+    CH_CIR_2          -0.002      0.001     -1.588      0.112
+    CH_CIR_3           0.003      0.002      1.994      0.046
+    CH_CIR_4           0.001      0.001      1.187      0.235
+    CH_CIR_5           0.001      0.001      0.973      0.331
+    CH_HLTH_P          0.001      0.001      0.728      0.467
+    DRNK_12_1         -0.005      0.002     -2.739      0.006
+    DRNK_12_2          0.006      0.001      4.054      0.000
+
+ R11DOCTI WITH
+    ART_1_12           0.001      0.002      0.660      0.509
+    HBP_1_12           0.004      0.002      2.388      0.017
+    OTH_SIN_CO         0.002      0.001      1.375      0.169
+    HBP_ART            0.006      0.002      3.074      0.002
+    HBP_HRT_AR        -0.002      0.001     -1.561      0.119
+    HBP_DIA_AR        -0.001      0.001     -0.917      0.359
+    HBP_DIA_HR        -0.003      0.001     -2.750      0.006
+    HBP_CAN_AR         0.001      0.001      1.133      0.257
+    HBP_DIA            0.002      0.001      2.177      0.029
+    HRT_ART            0.000      0.001      0.342      0.732
+    CAN_ART            0.000      0.001      0.001      0.999
+    HBP_LNG_AR        -0.001      0.001     -1.253      0.210
+    OTH_COMB          -0.007      0.003     -2.868      0.004
+    R11AGEY_B          0.037      0.045      0.810      0.418
+    FEMALE            -0.002      0.003     -0.541      0.589
+    MAR_12             0.003      0.003      1.130      0.259
+    BLACK             -0.004      0.001     -2.993      0.003
+    OTHER              0.000      0.001     -0.284      0.776
+    LATINX            -0.004      0.001     -2.411      0.016
+    NONUS_B           -0.001      0.002     -0.383      0.702
+    EDUC_C_1          -0.010      0.002     -4.898      0.000
+    EDUC_C_3           0.001      0.003      0.327      0.744
+    INC_Q2_12          0.000      0.002     -0.085      0.932
+    INC_Q3_12          0.001      0.003      0.224      0.823
+    INC_Q4_12          0.004      0.003      1.662      0.097
+    WLT_Q2_12          0.003      0.003      1.118      0.264
+    WLT_Q3_12          0.003      0.003      1.053      0.292
+    WLT_Q4_12          0.004      0.003      1.574      0.115
+    BMI_12UN           0.001      0.001      0.733      0.464
+    BMI_12OW           0.009      0.003      3.162      0.002
+    BMI_12OB          -0.010      0.003     -3.988      0.000
+    VACT_12C           0.013      0.003      5.056      0.000
+    CH_CIR_1           0.006      0.003      2.292      0.022
+    CH_CIR_2          -0.002      0.002     -0.834      0.404
+    CH_CIR_3          -0.001      0.002     -0.628      0.530
+    CH_CIR_4          -0.003      0.002     -1.521      0.128
+    CH_CIR_5          -0.002      0.001     -1.313      0.189
+    CH_HLTH_P         -0.002      0.001     -1.736      0.083
+    DRNK_12_1          0.008      0.003      2.964      0.003
+    DRNK_12_2          0.002      0.001      1.561      0.119
+    SMOKE_12          -0.002      0.002     -1.413      0.158
+
+ R11DOCTI WITH
+    ART_1_12          -0.006      0.002     -3.560      0.000
+    HBP_1_12          -0.003      0.001     -2.370      0.018
+    OTH_SIN_CO        -0.001      0.001     -0.744      0.457
+    HBP_ART           -0.001      0.002     -0.523      0.601
+    HBP_HRT_AR         0.005      0.001      3.414      0.001
+    HBP_DIA_AR         0.005      0.001      3.212      0.001
+    HBP_DIA_HR         0.004      0.001      3.421      0.001
+    HBP_CAN_AR         0.000      0.001     -0.126      0.900
+    HBP_DIA            0.000      0.001      0.174      0.862
+    HRT_ART            0.000      0.001     -0.095      0.925
+    CAN_ART           -0.001      0.001     -1.823      0.068
+    HBP_LNG_AR         0.001      0.001      1.093      0.274
+    OTH_COMB           0.005      0.003      1.879      0.060
+    R11AGEY_B         -0.114      0.042     -2.732      0.006
+    FEMALE             0.004      0.003      1.461      0.144
+    MAR_12             0.003      0.003      1.178      0.239
+    BLACK             -0.001      0.001     -0.557      0.578
+    OTHER              0.000      0.001      0.213      0.832
+    LATINX            -0.003      0.001     -2.469      0.014
+    NONUS_B           -0.005      0.001     -3.152      0.002
+    EDUC_C_1          -0.007      0.002     -3.380      0.001
+    EDUC_C_3           0.008      0.003      2.797      0.005
+    INC_Q2_12          0.001      0.002      0.437      0.662
+    INC_Q3_12          0.002      0.002      0.937      0.349
+    INC_Q4_12          0.007      0.003      2.747      0.006
+    WLT_Q2_12         -0.002      0.002     -0.998      0.318
+    WLT_Q3_12          0.003      0.002      1.061      0.289
+    WLT_Q4_12          0.003      0.003      1.002      0.316
+    BMI_12UN          -0.001      0.001     -1.393      0.164
+    BMI_12OW          -0.007      0.003     -2.567      0.010
+    BMI_12OB           0.015      0.003      5.670      0.000
+    VACT_12C          -0.003      0.002     -1.134      0.257
+    CH_CIR_1           0.000      0.003      0.140      0.889
+    CH_CIR_2           0.003      0.002      1.183      0.237
+    CH_CIR_3          -0.003      0.002     -1.227      0.220
+    CH_CIR_4          -0.001      0.002     -0.771      0.441
+    CH_CIR_5          -0.001      0.001     -0.925      0.355
+    CH_HLTH_P          0.001      0.001      0.648      0.517
+    DRNK_12_1         -0.001      0.003     -0.256      0.798
+    DRNK_12_2          0.000      0.001      0.247      0.805
+    SMOKE_12          -0.003      0.002     -1.869      0.062
+    R11DOCTIM_        -0.071      0.002    -40.683      0.000
+
+ R11DOCTI WITH
+    ART_1_12          -0.008      0.001     -6.607      0.000
+    HBP_1_12          -0.008      0.001     -8.204      0.000
+    OTH_SIN_CO        -0.003      0.001     -3.610      0.000
+    HBP_ART           -0.005      0.002     -3.146      0.002
+    HBP_HRT_AR         0.002      0.001      1.468      0.142
+    HBP_DIA_AR         0.001      0.001      0.946      0.344
+    HBP_DIA_HR         0.004      0.001      3.232      0.001
+    HBP_CAN_AR         0.002      0.001      1.790      0.073
+    HBP_DIA           -0.003      0.001     -4.401      0.000
+    HRT_ART            0.000      0.001      0.035      0.972
+    CAN_ART            0.002      0.001      1.968      0.049
+    HBP_LNG_AR         0.001      0.001      0.907      0.364
+    OTH_COMB           0.025      0.003      9.903      0.000
+    R11AGEY_B          0.059      0.039      1.528      0.127
+    FEMALE             0.003      0.002      1.210      0.226
+    MAR_12             0.000      0.003      0.142      0.887
+    BLACK              0.001      0.001      0.418      0.676
+    OTHER              0.000      0.001     -0.206      0.837
+    LATINX            -0.002      0.001     -1.775      0.076
+    NONUS_B           -0.001      0.002     -0.685      0.493
+    EDUC_C_1          -0.001      0.002     -0.616      0.538
+    EDUC_C_3           0.007      0.003      2.520      0.012
+    INC_Q2_12         -0.001      0.002     -0.374      0.708
+    INC_Q3_12         -0.001      0.002     -0.392      0.695
+    INC_Q4_12          0.000      0.002      0.177      0.860
+    WLT_Q2_12         -0.002      0.002     -0.996      0.319
+    WLT_Q3_12         -0.002      0.002     -0.727      0.467
+    WLT_Q4_12          0.000      0.002      0.094      0.925
+    BMI_12UN           0.000      0.001      0.395      0.693
+    BMI_12OW          -0.003      0.002     -1.317      0.188
+    BMI_12OB           0.008      0.002      3.163      0.002
+    VACT_12C          -0.011      0.002     -5.356      0.000
+    CH_CIR_1           0.001      0.002      0.473      0.637
+    CH_CIR_2          -0.001      0.002     -0.269      0.788
+    CH_CIR_3           0.000      0.002      0.195      0.845
+    CH_CIR_4          -0.002      0.002     -1.117      0.264
+    CH_CIR_5           0.001      0.001      0.638      0.523
+    CH_HLTH_P          0.003      0.001      2.034      0.042
+    DRNK_12_1         -0.009      0.002     -3.722      0.000
+    DRNK_12_2         -0.002      0.001     -1.911      0.056
+    SMOKE_12          -0.001      0.002     -0.320      0.749
+    R11DOCTIM_        -0.055      0.002    -35.986      0.000
+    R11DOCTIM_        -0.052      0.002    -34.226      0.000
+
+ Means
+    ART_1_12           0.092      0.004     24.816      0.000
+    HBP_1_12           0.068      0.003     20.631      0.000
+    OTH_SIN_CO         0.039      0.003     15.432      0.000
+    HBP_ART            0.143      0.004     33.387      0.000
+    HBP_HRT_AR         0.069      0.003     22.680      0.000
+    HBP_DIA_AR         0.057      0.003     19.906      0.000
+    HBP_DIA_HR         0.038      0.002     15.930      0.000
+    HBP_CAN_AR         0.035      0.002     15.888      0.000
+    HBP_DIA            0.025      0.002     11.879      0.000
+    HRT_ART            0.024      0.002     12.267      0.000
+    CAN_ART            0.024      0.002     12.144      0.000
+    HBP_LNG_AR         0.020      0.002     11.877      0.000
+    OTH_COMB           0.298      0.006     53.341      0.000
+    R11AGEY_B          0.000      0.103      0.000      1.000
+    FEMALE             0.000      0.005      0.000      1.000
+    MAR_12             0.000      0.007     -0.033      0.974
+    BLACK              0.000      0.003      0.010      0.992
+    OTHER              0.000      0.002      0.001      0.999
+    LATINX             0.000      0.003      0.006      0.995
+    NONUS_B            0.000      0.004      0.018      0.986
+    EDUC_C_1           0.000      0.005      0.005      0.996
+    EDUC_C_3           0.000      0.007     -0.002      0.999
+    INC_Q2_12          0.000      0.006      0.000      1.000
+    INC_Q3_12          0.000      0.006      0.000      1.000
+    INC_Q4_12          0.000      0.007      0.000      1.000
+    WLT_Q2_12          0.000      0.006      0.000      1.000
+    WLT_Q3_12          0.000      0.006      0.000      1.000
+    WLT_Q4_12          0.000      0.006      0.000      1.000
+    BMI_12UN           0.000      0.001      0.033      0.974
+    BMI_12OW           0.000      0.006     -0.041      0.967
+    BMI_12OB           0.000      0.006     -0.011      0.991
+    VACT_12C           0.000      0.006     -0.010      0.992
+    CH_CIR_1           0.000      0.006      0.000      1.000
+    CH_CIR_2           0.000      0.005      0.000      1.000
+    CH_CIR_3           0.000      0.005      0.000      1.000
+    CH_CIR_4           0.000      0.004      0.000      1.000
+    CH_CIR_5           0.000      0.003      0.000      1.000
+    CH_HLTH_P          0.000      0.003      0.004      0.997
+    DRNK_12_1          0.000      0.006      0.026      0.979
+    DRNK_12_2          0.000      0.003      0.019      0.985
+    SMOKE_12           0.000      0.004     -0.038      0.970
+    R11DOCTIM_        -0.001      0.006     -0.245      0.807
+    R11DOCTIM_         0.000      0.006     -0.010      0.992
+    R11DOCTIM_         0.002      0.005      0.388      0.698
+
+ Intercepts
+    DEP_I             -0.881      0.085    -10.369      0.000
+    DEP_S              0.097      0.019      5.000      0.000
+    R11CESD            0.000      0.000    999.000    999.000
+    R12CESD            0.000      0.000    999.000    999.000
+    R13CESD            0.000      0.000    999.000    999.000
+    R14CESD            0.000      0.000    999.000    999.000
+    R15CESD            0.000      0.000    999.000    999.000
+
+ Variances
+    ART_1_12           0.084      0.003     27.621      0.000
+    HBP_1_12           0.063      0.003     22.254      0.000
+    OTH_SIN_CO         0.038      0.002     16.094      0.000
+    HBP_ART            0.122      0.003     40.061      0.000
+    HBP_HRT_AR         0.064      0.003     24.504      0.000
+    HBP_DIA_AR         0.054      0.003     21.180      0.000
+    HBP_DIA_HR         0.036      0.002     16.581      0.000
+    HBP_CAN_AR         0.034      0.002     16.493      0.000
+    HBP_DIA            0.024      0.002     12.189      0.000
+    HRT_ART            0.024      0.002     12.580      0.000
+    CAN_ART            0.023      0.002     12.446      0.000
+    HBP_LNG_AR         0.019      0.002     12.120      0.000
+    OTH_COMB           0.209      0.002     92.836      0.000
+    R11AGEY_B         53.760      0.833     64.526      0.000
+    FEMALE             0.245      0.001    352.001      0.000
+    MAR_12             0.241      0.001    186.071      0.000
+    BLACK              0.077      0.003     30.659      0.000
+    OTHER              0.022      0.002     10.860      0.000
+    LATINX             0.065      0.003     22.749      0.000
+    NONUS_B            0.080      0.003     26.730      0.000
+    EDUC_C_1           0.156      0.003     51.422      0.000
+    EDUC_C_3           0.249      0.000    538.393      0.000
+    INC_Q2_12          0.187      0.003     61.627      0.000
+    INC_Q3_12          0.188      0.003     58.777      0.000
+    INC_Q4_12          0.187      0.003     56.247      0.000
+    WLT_Q2_12          0.187      0.003     61.367      0.000
+    WLT_Q3_12          0.188      0.003     59.488      0.000
+    WLT_Q4_12          0.187      0.003     57.615      0.000
+    BMI_12UN           0.016      0.001     11.234      0.000
+    BMI_12OW           0.236      0.001    166.477      0.000
+    BMI_12OB           0.209      0.002     86.535      0.000
+    VACT_12C           0.178      0.003     60.375      0.000
+    CH_CIR_1           0.201      0.002     80.372      0.000
+    CH_CIR_2           0.159      0.003     53.457      0.000
+    CH_CIR_3           0.146      0.003     48.380      0.000
+    CH_CIR_4           0.090      0.003     30.997      0.000
+    CH_CIR_5           0.045      0.002     19.033      0.000
+    CH_HLTH_P          0.053      0.003     21.112      0.000
+    DRNK_12_1          0.211      0.002     88.532      0.000
+    DRNK_12_2          0.048      0.003     17.919      0.000
+    SMOKE_12           0.085      0.003     26.112      0.000
+    R11DOCTIM_         0.199      0.003     75.177      0.000
+    R11DOCTIM_         0.191      0.003     69.055      0.000
+    R11DOCTIM_         0.160      0.003     51.510      0.000
+
+ Residual Variances
+    DEP_I              1.071      0.036     29.844      0.000
+    DEP_S              0.014      0.002      8.916      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.599E-08
+       (ratio of smallest to largest eigenvalue)
+
+     Beginning Time:  10:50:41
+        Ending Time:  11:23:13
+       Elapsed Time:  00:32:32
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2022 Muthen & Muthen
