@@ -64,7 +64,7 @@ library(purrr)
 setwd("C:/YOURPATH/")
 
 # read rand hrs data
-rand <- read_spss("randhrs1992_2020v2.sav")
+rand <- read_spss("randhrs1992_2022v1.sav")
 
 # Filter data by non-missing CESD, non-missing chronic conditions, age greater than 65, 
 # excluding proxy responses and missing/zero weights
@@ -105,7 +105,7 @@ rand3 <- rand2  %>%
   remove_val_labels()
 
 # childhood and health data
-chf <- read_spss("childhoodhealthfamily.sav") %>%
+chf <- read_spss("AGGCHLDFH2016A_R.sav") %>%
   clean_names(., "snake") %>%
   dplyr::select(hhid, pn, moeduc, faeduc, rthlthch,
                 famfin, movfin, fmfinh, faunem, fjob)
