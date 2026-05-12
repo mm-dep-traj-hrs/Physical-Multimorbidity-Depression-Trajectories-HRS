@@ -12,7 +12,7 @@
 #   - HRS Childhood Health and Family file: childhoodhealthfamily.sav
 #   Both files require registration and approval at https://hrsdata.isr.umich.edu/.
 #
-# R version:    [e.g., 4.5.2]
+# R version:    [4.5.2]
 # Mplus:        Output .dat files are formatted for Mplus via MplusAutomation.
 
 
@@ -595,8 +595,7 @@ ipw_df2 <- ipw_df1 %>%
       mdn_bmi >= 18.5 & mdn_bmi < 25 ~ 2,   # normal (reference)
       mdn_bmi >= 25   & mdn_bmi < 30 ~ 3,   # overweight
       mdn_bmi >= 30                   ~ 4,   # obese
-      TRUE ~ NA_real_
-    )),
+      TRUE ~ NA_real_)),
     bmi_cat = factor(bmi_cat, levels = c("2", "1", "3", "4")),
     
     vact_c = case_when(
@@ -817,7 +816,7 @@ imputed_dropout_final_2 <- imputed_dropout_final %>%
 
 vtable(imputed_dropout_final_2)
 
-# calculate manually to cross-check (mirrors your IPW approach)
+# calculate manually to cross-check (mirrors weightit approach)
 glm_dropout <- glm(
   no_dropout_d_n ~
     mdn_age + 
