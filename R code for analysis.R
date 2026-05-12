@@ -4,7 +4,7 @@
 # Author:       Nicholas Bishop, University of Arizona
 # Last updated: 05-04-2026
 # Description:  Data preparation, multimorbidity classification, and inverse
-#               probability of dropout weight (IPDW) construction for analyses
+#               probability of dropout weight (IPW) construction for analyses
 #               of depression trajectories among older U.S. adults using HRS
 #               waves 11-15 (2012-2020).
 # Data sources:
