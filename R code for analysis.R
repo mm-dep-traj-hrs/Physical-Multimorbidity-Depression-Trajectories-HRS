@@ -1,7 +1,7 @@
 # HEADER ===
 # Title:        Prevalent Physical Multimorbidity Patterns and Depressive Symptom 
 #               Trajectories among Community Dwelling U.S. Older Adults
-# Author:       Nicholas Bishop, University of Arizona
+# Author:       anonymized for review 
 # Last updated: 05-04-2026
 # Description:  Data preparation, multimorbidity classification, and inverse
 #               probability of dropout weight (IPW) construction for analyses
