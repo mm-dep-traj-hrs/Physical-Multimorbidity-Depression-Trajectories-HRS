@@ -40,4 +40,4 @@ Both files require registration and approval at https://hrsdata.isr.umich.edu/. 
 
 If you use this code, please cite:
 
-Bishop, N. J., Walker, K. J., Nagel, C. L., Newsom, J. T., Botoseneanu, A., Allore, H. G., Triolo, F., & Quiñones, A. R. (UPDATE). Prevalent physical multimorbidity patterns and depressive symptom trajectories among community dwelling U.S. older adults. *Aging & Mental Health*.
+Anonymized for review
