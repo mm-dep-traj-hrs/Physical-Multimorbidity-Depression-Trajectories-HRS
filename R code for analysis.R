@@ -1,7 +1,7 @@
 # HEADER ===
 # Title:        Prevalent Physical Multimorbidity Patterns and Depressive Symptom 
 #               Trajectories among Community Dwelling U.S. Older Adults
-# Author:       anonymized for review 
+# Author:       Anonymized for review 
 # Last updated: 05-04-2026
 # Description:  Data preparation, multimorbidity classification, and inverse
 #               probability of dropout weight (IPW) construction for analyses
