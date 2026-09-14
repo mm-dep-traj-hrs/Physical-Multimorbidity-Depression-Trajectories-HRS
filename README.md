@@ -2,9 +2,9 @@
 
 Supplementary code for *Prevalent Physical Multimorbidity Patterns and Depressive Symptom Trajectories among Community Dwelling U.S. Older Adults*.
 
-**Author:** Nicholas Bishop, University of Arizona  
-**Contact:** njbishop@arizona.edu  
-**Last updated:** 2026-05-05
+**Author:** anonymized for review 
+**Contact:** anonymized for review 
+**Last updated:** 2026-05-13
 
 ## Overview
 
@@ -40,4 +40,4 @@ Both files require registration and approval at https://hrsdata.isr.umich.edu/. 
 
 If you use this code, please cite:
 
-Bishop, N. J., Walker, K. J., Nagel, C. L., Newsom, J. T., Botoseneanu, A., Allore, H. G., Triolo, F., & Quiñones, A. R. (UPDATE). Prevalent physical multimorbidity patterns and depressive symptom trajectories among community dwelling U.S. older adults. *Aging & Mental Health*.
+Anonymized for review
